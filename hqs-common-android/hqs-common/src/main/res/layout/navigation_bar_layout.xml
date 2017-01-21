@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_left_item"
+        android:layout_width="@dimen/itemWidth"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/marginEdge"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/backImageView"
+            android:layout_width="@dimen/backImageWidth"
+            android:layout_height="@dimen/indicatorWH"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitStart"
+            android:src="@mipmap/back"
+            android:tint="@color/titleColor" />
+
+        <TextView
+            android:id="@+id/leftItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/backImageView"
+            android:text="left"
+            android:textColor="@color/titleColor"
+            android:textSize="@dimen/itemFontSize"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="title"
+        android:textColor="@color/titleColor"
+        android:textSize="@dimen/titleFontSize"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/rl_right_item"
+        android:layout_width="@dimen/itemWidth"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:paddingRight="@dimen/marginEdge"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/rightItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="right"
+            android:textColor="@color/titleColor"
+            android:textSize="@dimen/itemFontSize" />
+    </RelativeLayout>
+
+</RelativeLayout>
+
+

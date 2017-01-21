@@ -1,0 +1,20 @@
+<resources>
+
+    <!--有关navigation bar-->
+    <dimen name="titleFontSize">18sp</dimen>
+    <dimen name="itemFontSize">15sp</dimen>
+    <dimen name="marginEdge">10dp</dimen>
+    <dimen name="backImageWidth">20dp</dimen>
+    <dimen name="itemWidth">60dp</dimen>
+    <dimen name="indicatorWH">20dp</dimen>
+
+    <!--dialog-->
+    <dimen name="dialogMargin">16dp</dimen>
+    <dimen name="dialogHeight">120dp</dimen>
+    <dimen name="dialogButtonHeight">42dp</dimen>
+    <dimen name="dialogDividerHeight">1dp</dimen>
+
+    <!--欢迎界面的小圆-->
+    <dimen name="pointRadius">3dp</dimen>
+
+</resources>

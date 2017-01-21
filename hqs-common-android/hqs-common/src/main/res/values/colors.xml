@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="titleColor">#584a37</color>
+
+    <color name="dialogDividerColor">#ccc9c9</color>
+    <color name="themeBackgroundColor">#00494848</color>
+    <color name="dialogBackgroundColor">#a2494848</color>
+
+</resources>

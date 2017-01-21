@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="NavigationBarLinearLayout">
+        <attr name="navigationBarBackgroundColor" format="color" />
+        <attr name="navigationBarHeight" format="dimension" />
+        <attr name="navigationBarTitle" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="TimerButton">
+        <attr name="titleNormal" format="string"/>
+        <attr name="titleColor" format="color"/>
+        <attr name="totalTime" format="integer"/>
+    </declare-styleable>
+
+</resources>

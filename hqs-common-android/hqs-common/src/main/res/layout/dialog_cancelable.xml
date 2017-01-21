@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@android:color/white">
+
+
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="5dp"
+            android:padding="@dimen/dialogMargin"
+            android:minHeight="90dp"
+            android:text="this is message!  this is message!  this is message!  this is message!  this is message!"
+            android:textColor="@color/titleColor"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/tv_message"
+            android:background="@color/dialogDividerColor" />
+
+        <Button
+            android:id="@+id/btn_left"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialogButtonHeight"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/tv_divider"
+            android:layout_toLeftOf="@+id/tv_divider1"
+            android:background="@android:color/white"
+            android:text="取消"
+            android:textColor="#f7863f" />
+
+
+        <TextView
+            android:id="@+id/tv_divider1"
+            android:layout_width="1px"
+            android:layout_height="@dimen/dialogButtonHeight"
+            android:layout_below="@+id/tv_divider"
+            android:layout_centerHorizontal="true"
+            android:background="@color/dialogDividerColor" />
+
+        <Button
+            android:id="@+id/btn_right"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dialogButtonHeight"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tv_divider"
+            android:layout_toRightOf="@+id/tv_divider1"
+            android:background="@android:color/white"
+            android:text="确定"
+            android:textColor="#67ac3c" />
+
+
+    </RelativeLayout>
+</RelativeLayout>
