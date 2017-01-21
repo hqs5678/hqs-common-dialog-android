@@ -31,9 +31,9 @@ dependencies {
 
 
 
-def siteUrl = 'https://github.com/hqs5678/hqs-common'   // 项目的主页
-def gitUrl = 'https://github.com/hqs5678/hqs-common.git'   // Git仓库的url
-group = "com.hqs.common"            // Maven Group ID for the artifact，
+def siteUrl = 'https://github.com/hqs5678/hqs-common-dialog-android'   // 项目的主页
+def gitUrl = 'https://github.com/hqs5678/hqs-common-dialog-android.git'   // Git仓库的url
+group = "com.hqs.common.view.dialog"            // Maven Group ID for the artifact，
 install {
     repositories.mavenInstaller {
         // This generates POM.xml with proper parameters
@@ -79,7 +79,7 @@ bintray {
     pkg {
         userOrg="huangqingsong"
         repo = "hqs-common"         //这个应该是传到maven的仓库的
-        name = "hqs-common"    //发布的项目名字
+        name = "qdialog"    //发布的项目名字
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
