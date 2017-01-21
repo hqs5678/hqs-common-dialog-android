@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hqs.common.utils.StatusBarUtil;
 import com.hqs.common.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;
@@ -191,6 +192,7 @@ public class QDialog {
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            StatusBarUtil.transparencyBar(this);
 
             dialogActivity = new WeakReference<Activity>(this);
 
