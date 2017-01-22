@@ -45,7 +45,7 @@ public class QDialog {
     private static WeakReference<Activity> dialogActivity;
 
     private QDialog(Activity activity) {
-        this.activity = activity;
+        this.activity = new WeakReference<Activity>(activity);
         setup();
     }
 

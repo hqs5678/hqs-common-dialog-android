@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
 
-                        dialogView = QDialog.create(MainActivity.this)
+                        QDialog dialogView = QDialog.create(MainActivity.this)
                                 .setSingleButtonMode()
                                 .setRightButtonText("OK")
                                 .setRightButtonTextColor(Color.BLUE)
