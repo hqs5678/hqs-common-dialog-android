@@ -97,7 +97,7 @@ public class QDialog {
     }
 
     public QDialog setContentBackgroundColor(int color){
-        contentView.setBackgroundColor(color);
+        contentView.setCardBackgroundColor(color);
         ViewUtil.setRoundCornerToView(leftButton, 0, Color.GRAY, color);
         ViewUtil.setRoundCornerToView(rightButton, 0, Color.GRAY, color);
         return this;

@@ -163,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
                                 .setDividerHeight(4)
                                 .setDividerColor(Color.YELLOW)
                                 .setBackgroundRes(R.mipmap.ic_launcher)
+                                .setContentBackgroundColor(getResources().getColor(R.color.colorAccent))
                                 .setCancelable(true);
 
                         dialogView.show("hello this is message!!!!", new QDialog.OnDialogClickListener() {
@@ -195,7 +196,6 @@ public class MainActivity extends AppCompatActivity {
                                 .setLeftButtonText("Cancel")
                                 .setCancelable(true)
                                 .setDividerHeight(4)
-                                .setContentBackgroundColor(Color.GREEN)
                                 .setCancelable(true);
 
 
