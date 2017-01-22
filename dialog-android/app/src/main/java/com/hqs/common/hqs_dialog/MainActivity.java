@@ -1,7 +1,6 @@
 package com.hqs.common.hqs_dialog;
 
 import android.graphics.Color;
-import android.os.Handler;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,8 +19,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Handler handler = new Handler();
-    private QDialog dialogView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
 
-                        dialogView = new QDialog(MainActivity.this);
+                        QDialog dialogView = new QDialog(MainActivity.this);
                         dialogView.setSingleButtonMode()
                                 .setRightButtonText("OK")
                                 .setRightButtonTextColor(Color.BLUE)

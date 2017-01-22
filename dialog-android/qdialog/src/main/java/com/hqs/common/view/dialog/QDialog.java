@@ -26,7 +26,7 @@ import java.lang.ref.WeakReference;
 
 public class QDialog {
 
-    private Activity activity;
+    private static WeakReference<Activity> activity;
     private static CardView contentView;
     private static OnDialogClickListener dialogClickListener;
 
@@ -45,14 +45,14 @@ public class QDialog {
     private static WeakReference<Activity> dialogActivity;
 
     public QDialog(Activity activity) {
-        this.activity = activity;
+        this.activity = new WeakReference<Activity>(activity);
         setup();
     }
 
 
     private void setup() {
 
-        LayoutInflater inflater = LayoutInflater.from(activity);
+        LayoutInflater inflater = LayoutInflater.from(activity.get());
         contentView = (CardView) inflater.inflate(R.layout.dialog_cancelable, null);
 
         leftButton = (Button) contentView.findViewById(R.id.btn_left);
@@ -79,9 +79,9 @@ public class QDialog {
         tvMessage.setText(message);
         dialogClickListener = onDialogClickListener;
 
-        Intent intent = new Intent(activity, DialogActivity.class);
-        activity.startActivity(intent);
-        activity.overridePendingTransition(0, 0);
+        Intent intent = new Intent(activity.get(), DialogActivity.class);
+        activity.get().startActivity(intent);
+        activity.get().overridePendingTransition(0, 0);
     }
 
     public Button getLeftButton(){
