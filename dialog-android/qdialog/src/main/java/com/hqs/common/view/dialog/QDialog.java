@@ -247,6 +247,7 @@ public class QDialog {
             });
 
             Animation animation = AnimationUtils.loadAnimation(this, enterAnim);
+            animation.setFillAfter(true);
             relativeLayout.setAnimation(animation);
             animation.start();
 

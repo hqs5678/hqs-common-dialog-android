@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<set xmlns:android="http://schemas.android.com/apk/res/android">
+<set xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <scale
-        android:duration="200"
+        android:duration="300"
         android:interpolator="@anim/decelerate_factor_interpolator_qs"
         android:fromXScale="5.0"
         android:fromYScale="5.0"
@@ -11,9 +11,18 @@
         android:toXScale="1.0"
         android:toYScale="1.0" />
 
+    <scale
+        android:duration="500"
+        android:fromXScale="1.13"
+        android:fromYScale="1.13"
+        android:pivotX="50%p"
+        android:pivotY="50%p"
+        android:toXScale="1.0"
+        android:toYScale="1.0" />
+
     <alpha
-        android:duration="240"
-        android:startOffset="10"
+        android:duration="480"
+        android:startOffset="0"
         android:fromAlpha="0.0"
         android:toAlpha="1.0" />
 
