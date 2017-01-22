@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hqs.common.utils.ScreenUtils;
 import com.hqs.common.utils.StatusBarUtil;
 import com.hqs.common.utils.ViewUtil;
 
@@ -88,6 +89,13 @@ public class QDialog {
 
     public Button getRightButton(){
         return rightButton;
+    }
+
+    public QDialog setContentBackgroundColor(int color){
+        contentView.setBackgroundColor(color);
+        ViewUtil.setRoundCornerToView(leftButton, 0, Color.GRAY, color);
+        ViewUtil.setRoundCornerToView(rightButton, 0, Color.GRAY, color);
+        return this;
     }
 
     public void dismiss() {
@@ -193,6 +201,7 @@ public class QDialog {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             StatusBarUtil.transparencyBar(this);
+            ScreenUtils.setScreenOrientationPortrait(this);
 
             dialogActivity = new WeakReference<Activity>(this);
 

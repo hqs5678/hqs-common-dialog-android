@@ -26,7 +26,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.hqs.common:hqs-common:1.0.10'
+    compile 'com.hqs.common:hqs-common:1.0.11'
 }
 
 

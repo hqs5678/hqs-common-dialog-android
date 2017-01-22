@@ -195,7 +195,9 @@ public class MainActivity extends AppCompatActivity {
                                 .setLeftButtonText("Cancel")
                                 .setCancelable(true)
                                 .setDividerHeight(4)
+                                .setContentBackgroundColor(Color.GREEN)
                                 .setCancelable(true);
+
 
                         dialogView.show("hello this is message!!!!", new QDialog.OnDialogClickListener() {
                             @Override
@@ -214,12 +216,12 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
-//                        handler.postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                dialogView.dismiss();
-//                            }
-//                        }, 1000);
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                dialogView.dismiss();
+                            }
+                        }, 1000);
 
                         break;
 
