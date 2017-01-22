@@ -248,6 +248,22 @@ public class QDialog {
 
             Animation animation = AnimationUtils.loadAnimation(this, enterAnim);
             animation.setFillAfter(true);
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    relativeLayout.setEnabled(false);
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    relativeLayout.setEnabled(true);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
             relativeLayout.setAnimation(animation);
             animation.start();
 
@@ -278,7 +294,7 @@ public class QDialog {
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-
+                    relativeLayout.setEnabled(false);
                 }
 
                 @Override
