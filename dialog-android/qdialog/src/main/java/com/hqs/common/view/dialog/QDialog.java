@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ import java.lang.ref.WeakReference;
 public class QDialog {
 
     private Activity activity;
-    private static RelativeLayout contentView;
+    private static CardView contentView;
     private static OnDialogClickListener dialogClickListener;
 
     private static int enterAnim = R.anim.dialog_in_qs;
@@ -52,7 +53,7 @@ public class QDialog {
     private void setup() {
 
         LayoutInflater inflater = LayoutInflater.from(activity);
-        contentView = (RelativeLayout) inflater.inflate(R.layout.dialog_cancelable, null);
+        contentView = (CardView) inflater.inflate(R.layout.dialog_cancelable, null);
 
         leftButton = (Button) contentView.findViewById(R.id.btn_left);
         rightButton = (Button) contentView.findViewById(R.id.btn_right);
@@ -89,6 +90,10 @@ public class QDialog {
 
     public Button getRightButton(){
         return rightButton;
+    }
+
+    public static CardView getContentView() {
+        return contentView;
     }
 
     public QDialog setContentBackgroundColor(int color){
