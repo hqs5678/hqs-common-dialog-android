@@ -1,7 +1,6 @@
 package com.hqs.common.hqs_dialog;
 
 import android.graphics.Color;
-import android.os.Handler;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,8 +19,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Handler handler = new Handler();
-    private QDialog dialogView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,18 +101,16 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClickRightButton() {
                                 makeToast("ok");
-                                dialogView.release();
                             }
 
                             @Override
                             public void onClickLeftButton() {
                                 makeToast("cancel");
-                                dialogView.release();
                             }
 
                             @Override
                             public void onCancel() {
-                                dialogView.release();
+
                             }
                         });
 
@@ -133,18 +128,16 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClickRightButton() {
                                 makeToast("ok");
-                                dialogView.release();
                             }
 
                             @Override
                             public void onClickLeftButton() {
                                 makeToast("cancel");
-                                dialogView.release();
                             }
 
                             @Override
                             public void onCancel() {
-                                dialogView.release();
+
                             }
                         });
 
@@ -168,18 +161,17 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClickRightButton() {
                                 makeToast("ok");
-                                dialogView.release();
                             }
 
                             @Override
                             public void onClickLeftButton() {
                                 makeToast("cancel");
-                                dialogView.release();
+                                
                             }
 
                             @Override
                             public void onCancel() {
-                                dialogView.release();
+                                
                             }
                         });
 
@@ -213,12 +205,12 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                dialogView.dismiss();
-                            }
-                        }, 1000);
+//                        handler.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                dialogView.dismiss();
+//                            }
+//                        }, 1000);
 
                         break;
 
