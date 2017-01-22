@@ -190,7 +190,7 @@ public class QDialog {
         QDialog.dialogClickListener = null;
     }
 
-    public void release(){
+    private void release(){
         this.activity = null;
         this.tvMessage = null;
         this.tvDivider1 = null;
