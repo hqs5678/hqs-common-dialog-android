@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
 
-                        dialogView = new QDialog(MainActivity.this);
-                        dialogView.setSingleButtonMode()
+                        dialogView = QDialog.create(MainActivity.this)
+                                .setSingleButtonMode()
                                 .setRightButtonText("OK")
                                 .setRightButtonTextColor(Color.BLUE)
                                 .setCancelable(true);
@@ -123,9 +123,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                     case 1:
-                        dialogView = new QDialog(MainActivity.this);
-
-                        dialogView.setRightButtonTextColor(Color.BLUE)
+                        dialogView = QDialog.create(MainActivity.this)
+                                .setRightButtonTextColor(Color.BLUE)
                                 .setRightButtonText("OK")
                                 .setLeftButtonTextColor(Color.RED)
                                 .setLeftButtonText("Cancel")
@@ -153,9 +152,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                     case 2:
-                        dialogView = new QDialog(MainActivity.this);
-
-                        dialogView.setRightButtonTextColor(Color.BLUE)
+                        dialogView = QDialog.create(MainActivity.this)
+                                .setRightButtonTextColor(Color.BLUE)
                                 .setRightButtonText("OK")
                                 .setLeftButtonTextColor(Color.RED)
                                 .setLeftButtonText("Cancel")
@@ -188,9 +186,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 3:
-                        dialogView = new QDialog(MainActivity.this);
-
-                        dialogView.setRightButtonTextColor(Color.BLUE)
+                        dialogView = QDialog.create(MainActivity.this)
+                                .setRightButtonTextColor(Color.BLUE)
                                 .setRightButtonText("OK")
                                 .setLeftButtonTextColor(Color.RED)
                                 .setLeftButtonText("Cancel")

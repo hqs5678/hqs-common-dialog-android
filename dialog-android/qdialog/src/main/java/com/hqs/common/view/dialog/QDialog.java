@@ -44,9 +44,13 @@ public class QDialog {
     private static int backgroundRes = -1;
     private static WeakReference<Activity> dialogActivity;
 
-    public QDialog(Activity activity) {
+    private QDialog(Activity activity) {
         this.activity = activity;
         setup();
+    }
+
+    public static QDialog create(Activity activity){
+        return new QDialog(activity);
     }
 
 
