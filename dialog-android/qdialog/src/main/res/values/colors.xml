@@ -4,6 +4,7 @@
 
     <color name="dialogDividerColor">#ccc9c9</color>
     <color name="themeBackgroundColor">#00494848</color>
-    <color name="dialogBackgroundColor">#a2494848</color>
+    <color name="dialogBackgroundColor">#45494848</color>
+    <color name="dialogContentBackgroundColor">#f7f7f7</color>
 
 </resources>

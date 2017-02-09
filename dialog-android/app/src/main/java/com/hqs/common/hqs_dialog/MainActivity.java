@@ -12,8 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hqs.common.helper.dialog.QDialog;
 import com.hqs.common.utils.DensityUtils;
-import com.hqs.common.view.dialog.QDialog;
 
 import java.util.ArrayList;
 
