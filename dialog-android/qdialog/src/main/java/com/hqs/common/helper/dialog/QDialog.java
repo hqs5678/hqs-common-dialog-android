@@ -2,7 +2,6 @@ package com.hqs.common.helper.dialog;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.KeyEvent;
@@ -58,7 +57,11 @@ public class QDialog {
         activity.overridePendingTransition(0, 0);
     }
 
-
+    /**
+     * 设置对话框的颜色
+     * @param color
+     * @return
+     */
     public QDialog setContentBackgroundColor(int color) {
         dialogParam.contentBackgroundColor = color;
         return this;
@@ -80,11 +83,21 @@ public class QDialog {
         return dialogParam.dialogClickListener;
     }
 
+    /**
+     * 设置分割线粗细
+     * @param h
+     * @return
+     */
     public QDialog setDividerHeight(int h) {
         dialogParam.dividerHeight = h;
         return this;
     }
 
+    /**
+     * 设置点击按钮时波纹效果颜色
+     * @param color
+     * @return
+     */
     public QDialog setButtonRippleColor(int color) {
         dialogParam.buttonRippleColor = color;
         return this;
@@ -111,17 +124,33 @@ public class QDialog {
         return this;
     }
 
+    /**
+     * 设置动画
+     * @param enterAnim
+     * @param exitAnim
+     * @return
+     */
     public QDialog setAnimation(int enterAnim, int exitAnim) {
         dialogParam.enterAnim = enterAnim;
         dialogParam.exitAnim = exitAnim;
         return this;
     }
 
+    /**
+     * 设置背景颜色
+     * @param color
+     * @return
+     */
     public QDialog setDividerColor(int color) {
         dialogParam.rightButtonTextColor = color;
         return this;
     }
 
+    /**
+     * 设置背景
+     * @param res
+     * @return
+     */
     public QDialog setBackgroundRes(int res) {
         dialogParam.backgroundRes = res;
         return this;
@@ -135,11 +164,19 @@ public class QDialog {
         void onCancel();
     }
 
+    /**
+     * 是否能够取消(点击按钮之外的部分)
+     * @param cancelable
+     * @return
+     */
     public QDialog setCancelable(boolean cancelable) {
         dialogParam.cancelable = cancelable;
         return this;
     }
 
+    /**
+     * 释放资源
+     */
     public static void destroy() {
         QDialog.activityWeakReference.clear();
         QDialog.activityWeakReference = null;
@@ -173,6 +210,9 @@ public class QDialog {
             enter();
         }
 
+        /**
+         * 设置根视图
+         */
         private void setupRootView() {
             relativeLayout = new RelativeLayout(this);
             relativeLayout.setEnabled(false);
@@ -198,6 +238,9 @@ public class QDialog {
             });
         }
 
+        /**
+         * 初始化对话框
+         */
         private void setupContentView() {
 
             LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
@@ -259,12 +302,18 @@ public class QDialog {
             setupDividerColor();
         }
 
+        /**
+         * setup message
+         */
         private void setupMessage() {
             if (dialogParam.message != null) {
                 tvMessage.setText(dialogParam.message);
             }
         }
 
+        /**
+         * 设置对话框颜色
+         */
         private void setContentBackgroundColor() {
             contentView.setCardBackgroundColor(dialogParam.contentBackgroundColor);
             ViewUtil.setRoundCornerToView(leftButton, 0, dialogParam.buttonRippleColor,
@@ -273,6 +322,9 @@ public class QDialog {
                     dialogParam.contentBackgroundColor);
         }
 
+        /**
+         * 设置按钮颜色
+         */
         private void setupButtonColor() {
             if (dialogParam.leftButtonTextColor != -1) {
                 leftButton.setTextColor(dialogParam.leftButtonTextColor);
@@ -282,6 +334,9 @@ public class QDialog {
             }
         }
 
+        /**
+         * 设置按钮文字
+         */
         private void setupButtonText() {
             if (dialogParam.leftButtonText != null) {
                 leftButton.setText(dialogParam.leftButtonText);
@@ -291,6 +346,9 @@ public class QDialog {
             }
         }
 
+        /**
+         * 设置分割线高度
+         */
         private void setupDividerHeight() {
             if (dialogParam.dividerHeight != -1) {
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tvDivider0.getLayoutParams();
@@ -303,6 +361,9 @@ public class QDialog {
             }
         }
 
+        /**
+         * 设置分割线颜色
+         */
         private void setupDividerColor() {
             if (dialogParam.dividerColor != -1) {
                 tvDivider0.setBackgroundColor(dialogParam.dividerColor);
@@ -310,6 +371,9 @@ public class QDialog {
             }
         }
 
+        /**
+         * 设置进入动画
+         */
         private void enter() {
             Animation animation = AnimationUtils.loadAnimation(this, dialogParam.enterAnim);
             animation.setFillAfter(true);
@@ -333,6 +397,10 @@ public class QDialog {
             animation.start();
         }
 
+        /**
+         * 只显示一个按钮
+         * right button
+         */
         private void setSingleButtonMode() {
             if (dialogParam.isSingleButtonMode) {
                 leftButton.setVisibility(View.GONE);
@@ -344,6 +412,10 @@ public class QDialog {
             }
         }
 
+        /**
+         * 在finish时调用的方法
+         * 设置退出的动画
+         */
         private void onFinish() {
             relativeLayout.clearAnimation();
             Animation animation = AnimationUtils.loadAnimation(this, dialogParam.exitAnim);
@@ -375,12 +447,21 @@ public class QDialog {
             super.onDestroy();
         }
 
+        /**
+         * finish
+         */
         @Override
         public void finish() {
             super.finish();
             overridePendingTransition(0, 0);
         }
 
+        /**
+         * 拦截返回按钮事件
+         * @param keyCode
+         * @param event
+         * @return
+         */
         @Override
         public boolean onKeyDown(int keyCode, KeyEvent event) {
             if (keyCode == KeyEvent.KEYCODE_BACK && dialogParam.cancelable){
@@ -395,6 +476,9 @@ public class QDialog {
 
     }
 
+    /**
+     * 保存dialog的属性
+     */
     private class DialogParam {
         private int enterAnim = R.anim.dialog_in_qs;
         private int exitAnim = R.anim.dialog_out_qs;
