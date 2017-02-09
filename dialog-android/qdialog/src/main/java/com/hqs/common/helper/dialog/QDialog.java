@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,11 @@ public class QDialog {
 
     public QDialog setDividerHeight(int h) {
         dialogParam.dividerHeight = h;
+        return this;
+    }
+
+    public QDialog setButtonRippleColor(int color) {
+        dialogParam.buttonRippleColor = color;
         return this;
     }
 
@@ -169,9 +175,11 @@ public class QDialog {
 
         private void setupRootView() {
             relativeLayout = new RelativeLayout(this);
+            relativeLayout.setEnabled(false);
+
             this.setContentView(relativeLayout);
             if (dialogParam.backgroundRes == -1) {
-                relativeLayout.setBackgroundResource(R.color.dialogBackgroundColor);
+                relativeLayout.setBackgroundResource(R.color.q_dialogBackgroundColor);
             } else {
                 relativeLayout.setBackgroundResource(dialogParam.backgroundRes);
             }
@@ -236,7 +244,10 @@ public class QDialog {
             });
 
             if (dialogParam.contentBackgroundColor == -1) {
-                dialogParam.contentBackgroundColor = getResources().getColor(R.color.dialogContentBackgroundColor);
+                dialogParam.contentBackgroundColor = getResources().getColor(R.color.q_dialogContentBackgroundColor);
+            }
+            if (dialogParam.buttonRippleColor == -1){
+                dialogParam.buttonRippleColor = getResources().getColor(R.color.q_dialogButtonRippleColor);
             }
 
             setSingleButtonMode();
@@ -256,8 +267,10 @@ public class QDialog {
 
         private void setContentBackgroundColor() {
             contentView.setCardBackgroundColor(dialogParam.contentBackgroundColor);
-            ViewUtil.setRoundCornerToView(leftButton, 0, Color.GRAY, dialogParam.contentBackgroundColor);
-            ViewUtil.setRoundCornerToView(rightButton, 0, Color.GRAY, dialogParam.contentBackgroundColor);
+            ViewUtil.setRoundCornerToView(leftButton, 0, dialogParam.buttonRippleColor,
+                    dialogParam.contentBackgroundColor);
+            ViewUtil.setRoundCornerToView(rightButton, 0, dialogParam.buttonRippleColor,
+                    dialogParam.contentBackgroundColor);
         }
 
         private void setupButtonColor() {
@@ -367,6 +380,19 @@ public class QDialog {
             super.finish();
             overridePendingTransition(0, 0);
         }
+
+        @Override
+        public boolean onKeyDown(int keyCode, KeyEvent event) {
+            if (keyCode == KeyEvent.KEYCODE_BACK && dialogParam.cancelable){
+                if (this.relativeLayout.isEnabled()){
+                    this.relativeLayout.setEnabled(false);
+                    onFinish();
+                }
+            }
+            return true;
+        }
+
+
     }
 
     private class DialogParam {
@@ -384,6 +410,7 @@ public class QDialog {
         private int backgroundRes = -1;
         private boolean isSingleButtonMode = false;
         private int contentBackgroundColor = -1;
+        private int buttonRippleColor = -1;
         private OnDialogClickListener dialogClickListener = null;
     }
 }

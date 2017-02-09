@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                                 .setSingleButtonMode()
                                 .setRightButtonText("OK")
                                 .setRightButtonTextColor(Color.BLUE)
-                                .setCancelable(true);
+                                .setCancelable(false);
 
                         dialogView.show("hello this is message!!!!", new QDialog.OnDialogClickListener() {
                             @Override

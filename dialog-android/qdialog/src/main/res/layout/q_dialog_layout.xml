@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:lineSpacingExtra="5dp"
             android:minHeight="90dp"
-            android:padding="@dimen/dialogMargin"
+            android:padding="@dimen/q_dialogMargin"
             android:text="this is message!  this is message!  this is message!  this is message!  this is message!"
             android:textColor="@color/titleColor"
             android:textSize="15sp" />
@@ -30,12 +30,12 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_below="@id/tv_message"
-            android:background="@color/dialogDividerColor" />
+            android:background="@color/q_dialogDividerColor" />
 
         <Button
             android:id="@+id/btn_left"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dialogButtonHeight"
+            android:layout_height="@dimen/q_dialogButtonHeight"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/tv_divider"
             android:layout_toLeftOf="@+id/tv_divider1"
@@ -47,15 +47,15 @@
         <TextView
             android:id="@+id/tv_divider1"
             android:layout_width="1px"
-            android:layout_height="@dimen/dialogButtonHeight"
+            android:layout_height="@dimen/q_dialogButtonHeight"
             android:layout_below="@+id/tv_divider"
             android:layout_centerHorizontal="true"
-            android:background="@color/dialogDividerColor" />
+            android:background="@color/q_dialogDividerColor" />
 
         <Button
             android:id="@+id/btn_right"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dialogButtonHeight"
+            android:layout_height="@dimen/q_dialogButtonHeight"
             android:layout_alignParentRight="true"
             android:layout_below="@id/tv_divider"
             android:layout_toRightOf="@+id/tv_divider1"
