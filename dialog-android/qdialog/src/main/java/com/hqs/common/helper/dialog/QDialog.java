@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,6 +36,26 @@ public class QDialog {
 
     private QDialog(Activity activity) {
         dialogParam = new DialogParam();
+
+        AnimationSet animSet = new AnimationSet(true);
+
+        int duration = 5;
+        for (int i = 0; i < 7; i++) {
+            ScaleAnimation scaleAnim = (ScaleAnimation) AnimationUtils.loadAnimation(activity, R.anim.scale_anim_qs);
+            scaleAnim.setDuration(duration);
+
+            duration *= 2;
+            animSet.addAnimation(scaleAnim);
+        }
+
+        Animation fadeAnim = AnimationUtils.loadAnimation(activity, android.R.anim.fade_in);
+        fadeAnim.setDuration(120);
+
+        animSet.addAnimation(fadeAnim);
+
+
+
+        dialogParam.enterAnim = animSet;
         activityWeakReference = new WeakReference<Activity>(activity);
     }
 
@@ -127,11 +149,19 @@ public class QDialog {
     /**
      * 设置动画
      * @param enterAnim
+     * @return
+     */
+    public QDialog setEnterAnimation(Animation enterAnim) {
+        dialogParam.enterAnim = enterAnim;
+        return this;
+    }
+
+    /**
+     * 设置动画
      * @param exitAnim
      * @return
      */
-    public QDialog setAnimation(int enterAnim, int exitAnim) {
-        dialogParam.enterAnim = enterAnim;
+    public QDialog setAnimation(Animation exitAnim) {
         dialogParam.exitAnim = exitAnim;
         return this;
     }
@@ -270,19 +300,26 @@ public class QDialog {
                 @Override
                 public void onClick(View v) {
 
-                    if (dialogParam.dialogClickListener != null) {
-                        dialogParam.dialogClickListener.onClickLeftButton();
+                    if (relativeLayout.isEnabled()) {
+                        if (dialogParam.dialogClickListener != null) {
+                            dialogParam.dialogClickListener.onClickLeftButton();
+                        }
+                        onFinish();
                     }
-                    onFinish();
+
                 }
             });
             rightButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (dialogParam.dialogClickListener != null) {
-                        dialogParam.dialogClickListener.onClickRightButton();
+
+                    if (relativeLayout.isEnabled()){
+                        if (dialogParam.dialogClickListener != null) {
+                            dialogParam.dialogClickListener.onClickRightButton();
+                        }
+                        onFinish();
                     }
-                    onFinish();
+
                 }
             });
 
@@ -375,7 +412,8 @@ public class QDialog {
          * 设置进入动画
          */
         private void enter() {
-            Animation animation = AnimationUtils.loadAnimation(this, dialogParam.enterAnim);
+            Animation animation = dialogParam.enterAnim;
+
             animation.setFillAfter(true);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
@@ -418,7 +456,14 @@ public class QDialog {
          */
         private void onFinish() {
             relativeLayout.clearAnimation();
-            Animation animation = AnimationUtils.loadAnimation(this, dialogParam.exitAnim);
+            Animation animation;
+            if (dialogParam.exitAnim != null){
+                animation = dialogParam.exitAnim;
+            }
+            else{
+                animation = AnimationUtils.loadAnimation(this, dialogParam.exitAnimRes);
+            }
+
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -480,8 +525,9 @@ public class QDialog {
      * 保存dialog的属性
      */
     private class DialogParam {
-        private int enterAnim = R.anim.dialog_in_qs;
-        private int exitAnim = R.anim.dialog_out_qs;
+        private int exitAnimRes = R.anim.dialog_out_qs;
+        private Animation enterAnim = null;
+        private Animation exitAnim = null;
         private int margin = 40;
         private String message = null;
         private String leftButtonText = null;
