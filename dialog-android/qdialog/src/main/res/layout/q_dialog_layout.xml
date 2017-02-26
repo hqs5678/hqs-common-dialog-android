@@ -22,7 +22,7 @@
             android:minHeight="90dp"
             android:padding="@dimen/q_dialogMargin"
             android:text="this is message!  this is message!  this is message!  this is message!  this is message!"
-            android:textColor="@color/titleColor"
+            android:textColor="@color/q_titleColor"
             android:textSize="15sp" />
 
         <TextView
