@@ -35,7 +35,12 @@ public class QDialog {
 
 
     private QDialog(Activity activity) {
-        dialogParam = new DialogParam();
+        if (dialogParam == null){
+            dialogParam = new DialogParam();
+        }
+        if (dialogParam.onShowing){
+            return;
+        }
 
         AnimationSet animSet = new AnimationSet(true);
 
@@ -56,7 +61,7 @@ public class QDialog {
 
 
         dialogParam.enterAnim = animSet;
-        activityWeakReference = new WeakReference<Activity>(activity);
+        activityWeakReference = new WeakReference<>(activity);
     }
 
     public static QDialog create(Activity activity) {
@@ -70,8 +75,12 @@ public class QDialog {
     }
 
     public void show(String message, OnDialogClickListener onDialogClickListener) {
+        if (dialogParam.onShowing){
+            return;
+        }
         dialogParam.message = message;
         dialogParam.dialogClickListener = onDialogClickListener;
+        dialogParam.onShowing = true;
 
         Activity activity = activityWeakReference.get();
         Intent intent = new Intent(activity, DialogActivity.class);
@@ -208,10 +217,14 @@ public class QDialog {
      * 释放资源
      */
     public static void destroy() {
-        QDialog.activityWeakReference.clear();
-        QDialog.activityWeakReference = null;
-        QDialog.dialogActivityWeakReference.clear();
-        QDialog.dialogActivityWeakReference = null;
+        if (QDialog.activityWeakReference != null){
+            QDialog.activityWeakReference.clear();
+            QDialog.activityWeakReference = null;
+        }
+        if (QDialog.dialogActivityWeakReference != null) {
+            QDialog.dialogActivityWeakReference.clear();
+            QDialog.dialogActivityWeakReference = null;
+        }
         QDialog.dialogParam = null;
     }
 
@@ -232,7 +245,7 @@ public class QDialog {
             StatusBarUtil.transparencyBar(this);
             ScreenUtils.setScreenOrientationPortrait(this);
 
-            dialogActivityWeakReference = new WeakReference<DialogActivity>(this);
+            dialogActivityWeakReference = new WeakReference<>(this);
 
             setupRootView();
             setupContentView();
@@ -258,7 +271,8 @@ public class QDialog {
             relativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (dialogParam.cancelable) {
+
+                    if (dialogParam != null && dialogParam.cancelable) {
                         if (dialogParam.dialogClickListener != null) {
                             dialogParam.dialogClickListener.onCancel();
                         }
@@ -301,7 +315,7 @@ public class QDialog {
                 public void onClick(View v) {
 
                     if (relativeLayout.isEnabled()) {
-                        if (dialogParam.dialogClickListener != null) {
+                        if (dialogParam != null && dialogParam.dialogClickListener != null) {
                             dialogParam.dialogClickListener.onClickLeftButton();
                         }
                         onFinish();
@@ -314,7 +328,7 @@ public class QDialog {
                 public void onClick(View v) {
 
                     if (relativeLayout.isEnabled()){
-                        if (dialogParam.dialogClickListener != null) {
+                        if (dialogParam != null && dialogParam.dialogClickListener != null) {
                             dialogParam.dialogClickListener.onClickRightButton();
                         }
                         onFinish();
@@ -455,7 +469,12 @@ public class QDialog {
          * 设置退出的动画
          */
         private void onFinish() {
+            if (dialogParam == null){
+                return;
+            }
+
             relativeLayout.clearAnimation();
+
             Animation animation;
             if (dialogParam.exitAnim != null){
                 animation = dialogParam.exitAnim;
@@ -488,8 +507,9 @@ public class QDialog {
 
         @Override
         protected void onDestroy() {
-            QDialog.destroy();
             super.onDestroy();
+
+            QDialog.destroy();
         }
 
         /**
@@ -509,6 +529,9 @@ public class QDialog {
          */
         @Override
         public boolean onKeyDown(int keyCode, KeyEvent event) {
+            if (dialogParam == null) {
+                return super.onKeyDown(keyCode, event);
+            }
             if (keyCode == KeyEvent.KEYCODE_BACK && dialogParam.cancelable){
                 if (this.relativeLayout.isEnabled()){
                     this.relativeLayout.setEnabled(false);
@@ -542,5 +565,7 @@ public class QDialog {
         private int contentBackgroundColor = -1;
         private int buttonRippleColor = -1;
         private OnDialogClickListener dialogClickListener = null;
+        private boolean onShowing = false;
     }
 }
+
