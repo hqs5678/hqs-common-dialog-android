@@ -1,5 +1,6 @@
 package com.hqs.common.hqs_dialog;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,16 +15,24 @@ import android.widget.Toast;
 
 import com.hqs.common.helper.dialog.QDialog;
 import com.hqs.common.utils.DensityUtils;
+import com.hqs.common.utils.Log;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private View getRootView(Activity context)
+    {
+        return ((ViewGroup)context.findViewById(android.R.id.content)).getChildAt(0);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        View rootView = getRootView(this);
+        Log.print(rootView);
 
         final ArrayList<String> titles = new ArrayList<String>();
 

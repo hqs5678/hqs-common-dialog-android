@@ -1,10 +1,8 @@
 package com.hqs.common.helper.dialog;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
+import android.content.Context;
 import android.support.v7.widget.CardView;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +12,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.hqs.common.utils.DensityUtils;
 import com.hqs.common.utils.Log;
 import com.hqs.common.utils.ScreenUtils;
-import com.hqs.common.utils.StatusBarUtil;
 import com.hqs.common.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;
@@ -29,7 +25,6 @@ import java.lang.ref.WeakReference;
 public class QDialog {
 
     private static WeakReference<Activity> activityWeakReference;
-    private static WeakReference<DialogActivity> dialogActivityWeakReference;
 
     public static DialogParam dialogParam;
 
@@ -62,11 +57,18 @@ public class QDialog {
         dialogParam.dialogClickListener = onDialogClickListener;
         dialogParam.onShowing = true;
 
+
+
         Activity activity = activityWeakReference.get();
-        Intent intent = new Intent(activity, DialogActivity.class);
-        activity.startActivity(intent);
-        activity.overridePendingTransition(0, 0);
+        final ViewGroup parent = getRootView(activity);
+        final QDialogViewComponent dialogView = new QDialogViewComponent(parent, dialogParam);
+
     }
+    private ViewGroup getRootView(Activity context)
+    {
+        return (ViewGroup) ((ViewGroup)context.findViewById(android.R.id.content)).getChildAt(0);
+    }
+
 
     /**
      * 设置对话框的颜色
@@ -79,15 +81,8 @@ public class QDialog {
     }
 
     public void dismiss() {
-        DialogActivity dialogActivity = dialogActivityWeakReference.get();
-        if (dialogActivity != null) {
-            dialogActivity.onFinish();
-            if (dialogParam.dialogClickListener != null) {
-                dialogParam.dialogClickListener.onCancel();
-            }
-            dialogActivityWeakReference.clear();
-            dialogActivityWeakReference = null;
-        }
+        dialogParam = null;
+        activityWeakReference = null;
     }
 
     public OnDialogClickListener getOnDialogClickListener() {
@@ -180,16 +175,14 @@ public class QDialog {
             QDialog.activityWeakReference.clear();
             QDialog.activityWeakReference = null;
         }
-        if (QDialog.dialogActivityWeakReference != null) {
-            QDialog.dialogActivityWeakReference.clear();
-            QDialog.dialogActivityWeakReference = null;
-        }
         QDialog.dialogParam = null;
     }
 
 
-    public static class DialogActivity extends Activity {
+    public class QDialogViewComponent {
 
+        private Context context;
+        private ViewGroup parent;
         private RelativeLayout rootView;
         private CardView contentView;
         private Button singleButton;
@@ -199,18 +192,14 @@ public class QDialog {
         private TextView tvDivider0;
         private TextView tvDivider1;
         private View bgView;
+        private DialogParam dialogParam;
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            StatusBarUtil.transparencyBar(this);
-            ScreenUtils.setScreenOrientationPortrait(this);
-
-            dialogActivityWeakReference = new WeakReference<>(this);
-
+        public QDialogViewComponent(ViewGroup parent, DialogParam dialogParam) {
+            this.dialogParam = dialogParam;
+            this.parent = parent;
+            this.context = parent.getContext();
             setupRootView();
             setupContentView();
-
             enter();
         }
 
@@ -218,10 +207,10 @@ public class QDialog {
          * 设置根视图
          */
         private void setupRootView() {
-            rootView = new RelativeLayout(this);
-            this.setContentView(rootView);
+            rootView = new RelativeLayout(context);
+            parent.addView(rootView);
 
-            bgView = new View(this);
+            bgView = new View(context);
             bgView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             rootView.addView(bgView);
 
@@ -247,10 +236,10 @@ public class QDialog {
         private void setupContentView() {
 
             if (dialogParam.margin == 0){
-                dialogParam.margin = (int) (30 * ScreenUtils.density(this));
+                dialogParam.margin = (int) (30 * ScreenUtils.density(context));
             }
 
-            LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+            LayoutInflater inflater = LayoutInflater.from(context);
             contentView = (CardView) inflater.inflate(R.layout.q_dialog_layout, null);
 
             rootView.addView(contentView);
@@ -314,10 +303,10 @@ public class QDialog {
             });
 
             if (dialogParam.contentBackgroundColor == -1) {
-                dialogParam.contentBackgroundColor = getResources().getColor(R.color.q_dialogContentBackgroundColor);
+                dialogParam.contentBackgroundColor = context.getResources().getColor(R.color.q_dialogContentBackgroundColor);
             }
             if (dialogParam.buttonRippleColor == -1){
-                dialogParam.buttonRippleColor = getResources().getColor(R.color.q_dialogButtonRippleColor);
+                dialogParam.buttonRippleColor = context.getResources().getColor(R.color.q_dialogButtonRippleColor);
             }
 
             setSingleButtonMode();
@@ -409,7 +398,7 @@ public class QDialog {
          */
         private void enter() {
 
-            originS = ScreenUtils.screenW(this) / (ScreenUtils.screenW(this) - dialogParam.margin * 2) + 0.5f;
+            originS = ScreenUtils.screenW(context) / (ScreenUtils.screenW(context) - dialogParam.margin * 2) + 0.5f;
             contentView.setScaleX(originS);
             contentView.setScaleY(originS);
             contentView.postOnAnimation(new AnimRunnable());
@@ -469,7 +458,7 @@ public class QDialog {
 
             rootView.clearAnimation();
 
-            Animation animation = AnimationUtils.loadAnimation(this, dialogParam.exitAnimRes);
+            Animation animation = AnimationUtils.loadAnimation(context, dialogParam.exitAnimRes);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -478,7 +467,7 @@ public class QDialog {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    finish();
+                    parent.removeView(rootView);
                 }
 
                 @Override
@@ -491,42 +480,26 @@ public class QDialog {
             animation.start();
 
         }
-
-        @Override
-        protected void onDestroy() {
-            super.onDestroy();
-
-            QDialog.destroy();
-        }
-
-        /**
-         * finish
-         */
-        @Override
-        public void finish() {
-            super.finish();
-            overridePendingTransition(0, 0);
-        }
-
-        /**
-         * 拦截返回按钮事件
-         * @param keyCode
-         * @param event
-         * @return
-         */
-        @Override
-        public boolean onKeyDown(int keyCode, KeyEvent event) {
-            if (dialogParam == null) {
-                return super.onKeyDown(keyCode, event);
-            }
-            if (keyCode == KeyEvent.KEYCODE_BACK && dialogParam.cancelable){
-                if (this.rootView.isEnabled()){
-                    this.rootView.setEnabled(false);
-                    onFinish();
-                }
-            }
-            return true;
-        }
+//
+//        /**
+//         * 拦截返回按钮事件
+//         * @param keyCode
+//         * @param event
+//         * @return
+//         */
+//        @Override
+//        public boolean onKeyDown(int keyCode, KeyEvent event) {
+//            if (dialogParam == null) {
+//                return super.onKeyDown(keyCode, event);
+//            }
+//            if (keyCode == KeyEvent.KEYCODE_BACK && dialogParam.cancelable){
+//                if (this.rootView.isEnabled()){
+//                    this.rootView.setEnabled(false);
+//                    onFinish();
+//                }
+//            }
+//            return true;
+//        }
 
 
     }
