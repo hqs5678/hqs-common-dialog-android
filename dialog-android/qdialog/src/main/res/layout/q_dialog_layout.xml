@@ -21,9 +21,10 @@
             android:lineSpacingExtra="5dp"
             android:minHeight="90dp"
             android:padding="@dimen/q_dialogMargin"
+            android:textAlignment="center"
             android:text="this is message!  this is message!  this is message!  this is message!  this is message!"
             android:textColor="@color/q_titleColor"
-            android:textSize="15sp" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/tv_divider"
@@ -31,6 +32,16 @@
             android:layout_height="1px"
             android:layout_below="@id/tv_message"
             android:background="@color/q_dialogDividerColor" />
+
+        <Button
+            android:id="@+id/btn_single"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/q_dialogButtonHeight"
+            android:layout_below="@id/tv_divider"
+            android:background="@android:color/transparent"
+            android:text="确定"
+            android:visibility="invisible"
+            android:textColor="#f7863f" />
 
         <Button
             android:id="@+id/btn_left"

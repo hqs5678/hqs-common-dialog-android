@@ -9,13 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hqs.common.utils.DensityUtils;
+import com.hqs.common.utils.Log;
 import com.hqs.common.utils.ScreenUtils;
 import com.hqs.common.utils.StatusBarUtil;
 import com.hqs.common.utils.ViewUtil;
@@ -41,26 +41,6 @@ public class QDialog {
         if (dialogParam.onShowing){
             return;
         }
-
-        AnimationSet animSet = new AnimationSet(true);
-
-        int duration = 5;
-        for (int i = 0; i < 7; i++) {
-            ScaleAnimation scaleAnim = (ScaleAnimation) AnimationUtils.loadAnimation(activity, R.anim.scale_anim_qs);
-            scaleAnim.setDuration(duration);
-
-            duration *= 2;
-            animSet.addAnimation(scaleAnim);
-        }
-
-        Animation fadeAnim = AnimationUtils.loadAnimation(activity, android.R.anim.fade_in);
-        fadeAnim.setDuration(120);
-
-        animSet.addAnimation(fadeAnim);
-
-
-
-        dialogParam.enterAnim = animSet;
         activityWeakReference = new WeakReference<>(activity);
     }
 
@@ -134,6 +114,15 @@ public class QDialog {
         return this;
     }
 
+    public QDialog setSingleButtonText(String text) {
+        dialogParam.singleButtonText = text;
+        return this;
+    }
+
+    public QDialog setSingleButtonTextColor(int color) {
+        dialogParam.singleButtonTextColor = color;
+        return this;
+    }
 
     public QDialog setLeftButtonText(String text) {
         dialogParam.leftButtonText = text;
@@ -156,42 +145,12 @@ public class QDialog {
     }
 
     /**
-     * 设置动画
-     * @param enterAnim
-     * @return
-     */
-    public QDialog setEnterAnimation(Animation enterAnim) {
-        dialogParam.enterAnim = enterAnim;
-        return this;
-    }
-
-    /**
-     * 设置动画
-     * @param exitAnim
-     * @return
-     */
-    public QDialog setAnimation(Animation exitAnim) {
-        dialogParam.exitAnim = exitAnim;
-        return this;
-    }
-
-    /**
      * 设置背景颜色
      * @param color
      * @return
      */
     public QDialog setDividerColor(int color) {
         dialogParam.rightButtonTextColor = color;
-        return this;
-    }
-
-    /**
-     * 设置背景
-     * @param res
-     * @return
-     */
-    public QDialog setBackgroundRes(int res) {
-        dialogParam.backgroundRes = res;
         return this;
     }
 
@@ -231,13 +190,15 @@ public class QDialog {
 
     public static class DialogActivity extends Activity {
 
-        private RelativeLayout relativeLayout;
+        private RelativeLayout rootView;
         private CardView contentView;
+        private Button singleButton;
         private Button leftButton;
         private Button rightButton;
         private TextView tvMessage;
         private TextView tvDivider0;
         private TextView tvDivider1;
+        private View bgView;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -257,18 +218,16 @@ public class QDialog {
          * 设置根视图
          */
         private void setupRootView() {
-            relativeLayout = new RelativeLayout(this);
-            relativeLayout.setEnabled(false);
+            rootView = new RelativeLayout(this);
+            this.setContentView(rootView);
 
-            this.setContentView(relativeLayout);
-            if (dialogParam.backgroundRes == -1) {
-                relativeLayout.setBackgroundResource(R.color.q_dialogBackgroundColor);
-            } else {
-                relativeLayout.setBackgroundResource(dialogParam.backgroundRes);
-            }
+            bgView = new View(this);
+            bgView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            rootView.addView(bgView);
 
+            bgView.setBackgroundResource(R.color.q_dialogBackgroundColor);
 
-            relativeLayout.setOnClickListener(new View.OnClickListener() {
+            bgView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -287,10 +246,14 @@ public class QDialog {
          */
         private void setupContentView() {
 
+            if (dialogParam.margin == 0){
+                dialogParam.margin = (int) (30 * ScreenUtils.density(this));
+            }
+
             LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
             contentView = (CardView) inflater.inflate(R.layout.q_dialog_layout, null);
 
-            relativeLayout.addView(contentView);
+            rootView.addView(contentView);
 
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -304,6 +267,7 @@ public class QDialog {
                 }
             });
 
+            singleButton = (Button) contentView.findViewById(R.id.btn_single);
             leftButton = (Button) contentView.findViewById(R.id.btn_left);
             rightButton = (Button) contentView.findViewById(R.id.btn_right);
             tvMessage = (TextView) contentView.findViewById(R.id.tv_message);
@@ -314,7 +278,7 @@ public class QDialog {
                 @Override
                 public void onClick(View v) {
 
-                    if (relativeLayout.isEnabled()) {
+                    if (rootView.isEnabled()) {
                         if (dialogParam != null && dialogParam.dialogClickListener != null) {
                             dialogParam.dialogClickListener.onClickLeftButton();
                         }
@@ -327,13 +291,25 @@ public class QDialog {
                 @Override
                 public void onClick(View v) {
 
-                    if (relativeLayout.isEnabled()){
+                    if (rootView.isEnabled()){
                         if (dialogParam != null && dialogParam.dialogClickListener != null) {
                             dialogParam.dialogClickListener.onClickRightButton();
                         }
                         onFinish();
                     }
 
+                }
+            });
+            singleButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (rootView.isEnabled()){
+                        if (dialogParam != null && dialogParam.dialogClickListener != null) {
+                            dialogParam.dialogClickListener.onCancel();
+                        }
+                        onFinish();
+                    }
                 }
             });
 
@@ -383,6 +359,9 @@ public class QDialog {
             if (dialogParam.rightButtonTextColor != -1) {
                 rightButton.setTextColor(dialogParam.rightButtonTextColor);
             }
+            if (dialogParam.singleButtonTextColor != -1) {
+                singleButton.setTextColor(dialogParam.singleButtonTextColor);
+            }
         }
 
         /**
@@ -394,6 +373,9 @@ public class QDialog {
             }
             if (dialogParam.rightButtonText != null) {
                 rightButton.setText(dialogParam.rightButtonText);
+            }
+            if (dialogParam.singleButtonText != null) {
+                singleButton.setText(dialogParam.singleButtonText);
             }
         }
 
@@ -426,27 +408,41 @@ public class QDialog {
          * 设置进入动画
          */
         private void enter() {
-            Animation animation = dialogParam.enterAnim;
 
-            animation.setFillAfter(true);
-            animation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    relativeLayout.setEnabled(false);
+            originS = ScreenUtils.screenW(this) / (ScreenUtils.screenW(this) - dialogParam.margin * 2) + 0.5f;
+            contentView.setScaleX(originS);
+            contentView.setScaleY(originS);
+            contentView.postOnAnimation(new AnimRunnable());
+        }
+
+        private float n = 6;
+        private float originS = 0;
+        private class AnimRunnable implements Runnable{
+
+            float minS = 0.001f;
+
+            @Override
+            public void run() {
+
+                float s = contentView.getScaleX();
+                float step = (s - 1) / n;
+                if (step < minS){
+                    step = minS;
                 }
+                float alpha = 1 - (s - 1) / (originS - 1);
+                bgView.setAlpha(alpha);
+                contentView.setAlpha(alpha * 3);
 
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    relativeLayout.setEnabled(true);
+
+                s = s - step;
+
+                Log.print(alpha);
+                contentView.setScaleX(s);
+                contentView.setScaleY(s);
+                if (s > 1){
+                    contentView.postOnAnimationDelayed(new AnimRunnable(), 10);
                 }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            relativeLayout.setAnimation(animation);
-            animation.start();
+            }
         }
 
         /**
@@ -455,12 +451,10 @@ public class QDialog {
          */
         private void setSingleButtonMode() {
             if (dialogParam.isSingleButtonMode) {
-                leftButton.setVisibility(View.GONE);
-                tvDivider1.setVisibility(View.GONE);
-
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) rightButton.getLayoutParams();
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-                rightButton.setLayoutParams(layoutParams);
+                leftButton.setVisibility(View.INVISIBLE);
+                tvDivider1.setVisibility(View.INVISIBLE);
+                rightButton.setVisibility(View.INVISIBLE);
+                singleButton.setVisibility(View.VISIBLE);
             }
         }
 
@@ -473,20 +467,13 @@ public class QDialog {
                 return;
             }
 
-            relativeLayout.clearAnimation();
+            rootView.clearAnimation();
 
-            Animation animation;
-            if (dialogParam.exitAnim != null){
-                animation = dialogParam.exitAnim;
-            }
-            else{
-                animation = AnimationUtils.loadAnimation(this, dialogParam.exitAnimRes);
-            }
-
+            Animation animation = AnimationUtils.loadAnimation(this, dialogParam.exitAnimRes);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    relativeLayout.setEnabled(false);
+                    rootView.setEnabled(false);
                 }
 
                 @Override
@@ -500,7 +487,7 @@ public class QDialog {
                 }
             });
 
-            relativeLayout.setAnimation(animation);
+            rootView.setAnimation(animation);
             animation.start();
 
         }
@@ -533,8 +520,8 @@ public class QDialog {
                 return super.onKeyDown(keyCode, event);
             }
             if (keyCode == KeyEvent.KEYCODE_BACK && dialogParam.cancelable){
-                if (this.relativeLayout.isEnabled()){
-                    this.relativeLayout.setEnabled(false);
+                if (this.rootView.isEnabled()){
+                    this.rootView.setEnabled(false);
                     onFinish();
                 }
             }
@@ -549,18 +536,17 @@ public class QDialog {
      */
     private class DialogParam {
         private int exitAnimRes = R.anim.dialog_out_qs;
-        private Animation enterAnim = null;
-        private Animation exitAnim = null;
-        private int margin = 40;
+        private int margin = 0;
         private String message = null;
         private String leftButtonText = null;
         private String rightButtonText = null;
+        private String singleButtonText = null;
         private int leftButtonTextColor = -1;
         private int rightButtonTextColor = -1;
+        private int singleButtonTextColor = -1;
         private int dividerColor = -1;
         private int dividerHeight = -1;
         private boolean cancelable = false;
-        private int backgroundRes = -1;
         private boolean isSingleButtonMode = false;
         private int contentBackgroundColor = -1;
         private int buttonRippleColor = -1;

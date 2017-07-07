@@ -4,7 +4,7 @@
 
     <color name="q_dialogDividerColor">#ccc9c9</color>
     <color name="q_themeBackgroundColor">#00494848</color>
-    <color name="q_dialogBackgroundColor">#45494848</color>
+    <color name="q_dialogBackgroundColor">#b5000000</color>
     <color name="q_dialogContentBackgroundColor">#f7f7f7</color>
     <color name="q_dialogButtonRippleColor">#e2e0e0</color>
 
