@@ -115,7 +115,7 @@ public class QDialog {
         dialogParam = null;
         activityWeakReference = null;
     }
-  
+
     /**
      * 设置分割线粗细
      * @param h
