@@ -2,7 +2,7 @@
 简单封装对话框
 
 #### 运行效果
-![运行效果图]()
+![运行效果图](https://github.com/hqs5678/hqs-common-dialog-android/blob/master/2017-07-10%2015_10_51.gif)
 
 
  
