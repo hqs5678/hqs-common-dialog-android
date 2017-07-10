@@ -3,7 +3,6 @@ package com.hqs.common.helper.dialog;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.CardView;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,9 +61,7 @@ public class QDialog {
 
 
         Activity activity = activityWeakReference.get();
-
-        final ViewGroup parent = getRootView(activity);
-        dialogViewComponent = new QDialogViewComponent(parent, dialogParam, getActionBarContainer(activity));
+        dialogViewComponent = new QDialogViewComponent(getRootView(activity), dialogParam, getActionBarContainer(activity));
         dialogViewComponent.onDialogViewListener = new OnDialogViewListener() {
             @Override
             public void onFinish() {
@@ -73,24 +70,20 @@ public class QDialog {
         };
 
     }
-    private ViewGroup getRootView(Activity context)
-    {
-        ViewGroup view = (ViewGroup) ((ViewGroup)context.findViewById(android.R.id.content)).getChildAt(0);
 
-        return view;
-        //return (ViewGroup) ((ViewGroup)context.findViewById(android.R.id.content)).getChildAt(0);
+    // 获取activity的root view
+    private ViewGroup getRootView(Activity context) {
+        return (ViewGroup) ((ViewGroup)context.findViewById(android.R.id.content)).getChildAt(0);
     }
 
-    private ViewGroup getActionBarContainer(Activity context)
-    {
-        ViewGroup view = (ViewGroup) context.findViewById(R.id.action_bar_container);
-
-        return view;
-        //return (ViewGroup) ((ViewGroup)context.findViewById(android.R.id.content)).getChildAt(0);
+    // 获取actionBar的Container View
+    private ViewGroup getActionBarContainer(Activity context) {
+        return (ViewGroup) context.findViewById(R.id.action_bar_container);
     }
 
 
-
+    // 添加返回按钮点击事件
+    // 需要在调用者的activity中调用
     public boolean onBackPressed() {
             if (dialogViewComponent != null){
                 dialogViewComponent.onFinish();
@@ -194,17 +187,6 @@ public class QDialog {
         return this;
     }
 
-    /**
-     * 释放资源
-     */
-    public void destroy() {
-        if (activityWeakReference != null){
-            activityWeakReference.clear();
-            activityWeakReference = null;
-        }
-        dialogParam = null;
-    }
-
 
     public class QDialogViewComponent {
 
@@ -224,7 +206,7 @@ public class QDialog {
         private View actionBarBgView;
         private DialogParam dialogParam;
         private OnDialogViewListener onDialogViewListener;
-
+        private View.OnClickListener onDismissClickListener;
 
         public QDialogViewComponent(ViewGroup parent, DialogParam dialogParam, ViewGroup actionBarContainer) {
             this.dialogParam = dialogParam;
@@ -257,7 +239,7 @@ public class QDialog {
 
             bgView.setBackgroundResource(R.color.q_dialogBackgroundColor);
 
-            bgView.setOnClickListener(new View.OnClickListener() {
+            onDismissClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -268,7 +250,8 @@ public class QDialog {
                         onFinish();
                     }
                 }
-            });
+            };
+            bgView.setOnClickListener(onDismissClickListener);
 
             if (actionBarContainer != null){
                 actionBarBgView = new View(context);
@@ -294,13 +277,14 @@ public class QDialog {
             contentView.setAlpha(0);
             rootView.addView(contentView);
 
+            TextView tvBottom = (TextView) contentView.findViewById(R.id.tv_bottom);
             if (actionBarContainer != null){
-                TextView tvBottom = (TextView) contentView.findViewById(R.id.tv_bottom);
                 int h = actionBarContainer.getChildAt(0).getHeight();
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         (int) (h + 20 * ScreenUtils.density(context)));
                 tvBottom.setLayoutParams(params);
             }
+            tvBottom.setOnClickListener(onDismissClickListener);
 
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);

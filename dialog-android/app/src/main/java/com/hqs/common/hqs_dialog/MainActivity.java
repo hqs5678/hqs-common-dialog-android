@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                                 .setSingleButtonMode()
                                 .setSingleButtonText("OK")
                                 .setSingleButtonTextColor(Color.BLUE)
-                                .setCancelable(true);
+                                .setCancelable(false);
 
                         dialog.show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
                             @Override
