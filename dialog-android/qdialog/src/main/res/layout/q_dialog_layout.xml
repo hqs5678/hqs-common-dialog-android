@@ -1,80 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="#dfdddd"
-    app:cardCornerRadius="3dp"
-    app:cardElevation="1dp">
+    android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@android:color/transparent">
+        app:cardBackgroundColor="#dfdddd"
+        app:cardCornerRadius="3dp"
+        app:cardElevation="1dp">
 
-
-        <TextView
-            android:id="@+id/tv_message"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lineSpacingExtra="5dp"
-            android:minHeight="90dp"
-            android:padding="@dimen/q_dialogMargin"
-            android:textAlignment="center"
-            android:text="this is message!  this is message!  this is message!  this is message!  this is message!"
-            android:textColor="@color/q_titleColor"
-            android:textSize="17sp" />
-
-        <TextView
-            android:id="@+id/tv_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_below="@id/tv_message"
-            android:background="@color/q_dialogDividerColor" />
-
-        <Button
-            android:id="@+id/btn_single"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/q_dialogButtonHeight"
-            android:layout_below="@id/tv_divider"
-            android:background="@android:color/transparent"
-            android:text="确定"
-            android:visibility="invisible"
-            android:textColor="#f7863f" />
-
-        <Button
-            android:id="@+id/btn_left"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/q_dialogButtonHeight"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/tv_divider"
-            android:layout_toLeftOf="@+id/tv_divider1"
-            android:background="@android:color/transparent"
-            android:text="取消"
-            android:textColor="#f7863f" />
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent">
 
 
-        <TextView
-            android:id="@+id/tv_divider1"
-            android:layout_width="1px"
-            android:layout_height="@dimen/q_dialogButtonHeight"
-            android:layout_below="@+id/tv_divider"
-            android:layout_centerHorizontal="true"
-            android:background="@color/q_dialogDividerColor" />
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="5dp"
+                android:minHeight="90dp"
+                android:padding="@dimen/q_dialogMargin"
+                android:text="this is message!  this is message!  this is message!  this is message!  this is message!"
+                android:textAlignment="center"
+                android:textColor="@color/q_titleColor"
+                android:textSize="17sp" />
 
-        <Button
-            android:id="@+id/btn_right"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/q_dialogButtonHeight"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/tv_divider"
-            android:layout_toRightOf="@+id/tv_divider1"
-            android:background="@android:color/transparent"
-            android:text="确定"
-            android:textColor="#67ac3c" />
+            <TextView
+                android:id="@+id/tv_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_below="@id/tv_message"
+                android:background="@color/q_dialogDividerColor" />
+
+            <Button
+                android:id="@+id/btn_single"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/q_dialogButtonHeight"
+                android:layout_below="@id/tv_divider"
+                android:background="@android:color/transparent"
+                android:text="确定"
+                android:textColor="#f7863f"
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/btn_left"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/q_dialogButtonHeight"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/tv_divider"
+                android:layout_toLeftOf="@+id/tv_divider1"
+                android:background="@android:color/transparent"
+                android:text="取消"
+                android:textColor="#f7863f" />
 
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_divider1"
+                android:layout_width="1px"
+                android:layout_height="@dimen/q_dialogButtonHeight"
+                android:layout_below="@+id/tv_divider"
+                android:layout_centerHorizontal="true"
+                android:background="@color/q_dialogDividerColor" />
 
-</android.support.v7.widget.CardView>
+            <Button
+                android:id="@+id/btn_right"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/q_dialogButtonHeight"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/tv_divider"
+                android:layout_toRightOf="@+id/tv_divider1"
+                android:background="@android:color/transparent"
+                android:text="确定"
+                android:textColor="#67ac3c" />
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+    
+    <TextView
+        android:id="@+id/tv_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+</LinearLayout>
+
+

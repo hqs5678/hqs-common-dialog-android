@@ -2,8 +2,6 @@ package com.hqs.common.helper.dialog;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.ActionBarContainer;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +10,7 @@ import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -204,7 +203,8 @@ public class QDialog {
         private Context context;
         private ViewGroup parent;
         private RelativeLayout rootView;
-        private CardView contentView;
+        private LinearLayout contentView;
+        private CardView dialogView;
         private Button singleButton;
         private Button leftButton;
         private Button rightButton;
@@ -232,9 +232,8 @@ public class QDialog {
          */
         private void setupRootView() {
             rootView = new RelativeLayout(context);
-            rootView.setTop(-1 * 300);
             parent.addView(rootView);
-
+             
             bgView = new View(context);
             bgView.setAlpha(0);
             bgView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -263,7 +262,6 @@ public class QDialog {
                 actionBarBgView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h));
                 actionBarContainer.addView(actionBarBgView);
             }
-
         }
 
         /**
@@ -276,9 +274,17 @@ public class QDialog {
             }
 
             LayoutInflater inflater = LayoutInflater.from(context);
-            contentView = (CardView) inflater.inflate(R.layout.q_dialog_layout, null);
+            contentView = (LinearLayout) inflater.inflate(R.layout.q_dialog_layout, null);
             contentView.setAlpha(0);
             rootView.addView(contentView);
+
+            if (actionBarContainer != null){
+                TextView tvBottom = (TextView) contentView.findViewById(R.id.tv_bottom);
+                int h = actionBarContainer.getChildAt(0).getHeight();
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        (int) (h + 20 * ScreenUtils.density(context)));
+                tvBottom.setLayoutParams(params);
+            }
 
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -298,6 +304,8 @@ public class QDialog {
             tvMessage = (TextView) contentView.findViewById(R.id.tv_message);
             tvDivider1 = (TextView) contentView.findViewById(R.id.tv_divider1);
             tvDivider0 = (TextView) contentView.findViewById(R.id.tv_divider);
+            dialogView = (CardView) contentView.findViewById(R.id.card_view);
+
 
             leftButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -367,7 +375,7 @@ public class QDialog {
          * 设置对话框颜色
          */
         private void setContentBackgroundColor() {
-            contentView.setCardBackgroundColor(dialogParam.contentBackgroundColor);
+            dialogView.setCardBackgroundColor(dialogParam.contentBackgroundColor);
             ViewUtil.setRoundCornerToView(leftButton, 0, dialogParam.buttonRippleColor,
                     dialogParam.contentBackgroundColor);
             ViewUtil.setRoundCornerToView(rightButton, 0, dialogParam.buttonRippleColor,
