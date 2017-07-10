@@ -2,17 +2,19 @@ package com.hqs.common.helper.dialog;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.ActionBarContainer;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.hqs.common.utils.Log;
 import com.hqs.common.utils.ScreenUtils;
 import com.hqs.common.utils.ViewUtil;
 
@@ -61,12 +63,29 @@ public class QDialog {
 
         Activity activity = activityWeakReference.get();
         final ViewGroup parent = getRootView(activity);
-        final QDialogViewComponent dialogView = new QDialogViewComponent(parent, dialogParam);
-
+        final QDialogViewComponent dialogView = new QDialogViewComponent(parent, dialogParam, getActionBarContainer(activity));
+        dialogView.onDialogViewListener = new OnDialogViewListener() {
+            @Override
+            public void onFinish() {
+                parent.removeView(dialogView.rootView);
+                dismiss();
+            }
+        };
     }
     private ViewGroup getRootView(Activity context)
     {
-        return (ViewGroup) ((ViewGroup)context.findViewById(android.R.id.content)).getChildAt(0);
+        ViewGroup view = (ViewGroup) ((ViewGroup)context.findViewById(android.R.id.content)).getChildAt(0);
+
+        return view;
+        //return (ViewGroup) ((ViewGroup)context.findViewById(android.R.id.content)).getChildAt(0);
+    }
+
+    private ViewGroup getActionBarContainer(Activity context)
+    {
+        ViewGroup view = (ViewGroup) context.findViewById(R.id.action_bar_container);
+
+        return view;
+        //return (ViewGroup) ((ViewGroup)context.findViewById(android.R.id.content)).getChildAt(0);
     }
 
 
@@ -181,6 +200,7 @@ public class QDialog {
 
     public class QDialogViewComponent {
 
+        private ViewGroup actionBarContainer;
         private Context context;
         private ViewGroup parent;
         private RelativeLayout rootView;
@@ -192,12 +212,16 @@ public class QDialog {
         private TextView tvDivider0;
         private TextView tvDivider1;
         private View bgView;
+        private View actionBarBgView;
         private DialogParam dialogParam;
+        private OnDialogViewListener onDialogViewListener;
 
-        public QDialogViewComponent(ViewGroup parent, DialogParam dialogParam) {
+
+        public QDialogViewComponent(ViewGroup parent, DialogParam dialogParam, ViewGroup actionBarContainer) {
             this.dialogParam = dialogParam;
             this.parent = parent;
             this.context = parent.getContext();
+            this.actionBarContainer = actionBarContainer;
             setupRootView();
             setupContentView();
             enter();
@@ -208,9 +232,11 @@ public class QDialog {
          */
         private void setupRootView() {
             rootView = new RelativeLayout(context);
+            rootView.setTop(-1 * 300);
             parent.addView(rootView);
 
             bgView = new View(context);
+            bgView.setAlpha(0);
             bgView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             rootView.addView(bgView);
 
@@ -228,6 +254,16 @@ public class QDialog {
                     }
                 }
             });
+
+            if (actionBarContainer != null){
+                actionBarBgView = new View(context);
+                actionBarBgView.setAlpha(0);
+                actionBarBgView.setBackgroundResource(R.color.q_dialogBackgroundColor);
+                int h = actionBarContainer.getChildAt(0).getHeight();
+                actionBarBgView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h));
+                actionBarContainer.addView(actionBarBgView);
+            }
+
         }
 
         /**
@@ -241,7 +277,7 @@ public class QDialog {
 
             LayoutInflater inflater = LayoutInflater.from(context);
             contentView = (CardView) inflater.inflate(R.layout.q_dialog_layout, null);
-
+            contentView.setAlpha(0);
             rootView.addView(contentView);
 
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -397,19 +433,24 @@ public class QDialog {
          * 设置进入动画
          */
         private void enter() {
-
-            originS = ScreenUtils.screenW(context) / (ScreenUtils.screenW(context) - dialogParam.margin * 2) + 0.5f;
+            originS = ScreenUtils.screenW(context) / (ScreenUtils.screenW(context) - dialogParam.margin * 2) + 0.1f;
             contentView.setScaleX(originS);
             contentView.setScaleY(originS);
-            contentView.postOnAnimation(new AnimRunnable());
+
+            rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    contentView.postOnAnimation(new AnimRunnable());
+                }
+            });
         }
 
-        private float n = 6;
+        private float n = 8;
         private float originS = 0;
         private class AnimRunnable implements Runnable{
 
             float minS = 0.001f;
-
+            float maxS = 0.054f;
             @Override
             public void run() {
 
@@ -418,14 +459,18 @@ public class QDialog {
                 if (step < minS){
                     step = minS;
                 }
+                else if (step > maxS){
+                    step = maxS;
+                }
                 float alpha = 1 - (s - 1) / (originS - 1);
                 bgView.setAlpha(alpha);
-                contentView.setAlpha(alpha * 3);
-
+                if (actionBarBgView != null){
+                    actionBarBgView.setAlpha(alpha);
+                }
+                contentView.setAlpha(alpha);
 
                 s = s - step;
 
-                Log.print(alpha);
                 contentView.setScaleX(s);
                 contentView.setScaleY(s);
                 if (s > 1){
@@ -458,7 +503,7 @@ public class QDialog {
 
             rootView.clearAnimation();
 
-            Animation animation = AnimationUtils.loadAnimation(context, dialogParam.exitAnimRes);
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.dialog_out_qs);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -467,7 +512,10 @@ public class QDialog {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    parent.removeView(rootView);
+                    if (actionBarContainer != null) {
+                        actionBarContainer.removeView(actionBarBgView);
+                    }
+                    onDialogViewListener.onFinish();
                 }
 
                 @Override
@@ -478,6 +526,16 @@ public class QDialog {
 
             rootView.setAnimation(animation);
             animation.start();
+
+
+
+            if (actionBarBgView != null){
+
+                animation = AnimationUtils.loadAnimation(context, R.anim.fade_out_qs);
+                animation.setFillAfter(true);
+                actionBarBgView.clearAnimation();
+                actionBarBgView.setAnimation(animation);
+            }
 
         }
 //
@@ -508,7 +566,6 @@ public class QDialog {
      * 保存dialog的属性
      */
     private class DialogParam {
-        private int exitAnimRes = R.anim.dialog_out_qs;
         private int margin = 0;
         private String message = null;
         private String leftButtonText = null;
@@ -525,6 +582,10 @@ public class QDialog {
         private int buttonRippleColor = -1;
         private OnDialogClickListener dialogClickListener = null;
         private boolean onShowing = false;
+    }
+
+    private interface OnDialogViewListener {
+        void onFinish();
     }
 }
 
