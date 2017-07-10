@@ -13,6 +13,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -249,6 +250,17 @@ public class QDialog {
             if (parent instanceof LinearLayout){
                 LinearLayout linearLayout = (LinearLayout) parent;
                 if (linearLayout.getOrientation() == LinearLayout.HORIZONTAL){
+                    originX = -1 * parent.getWidth();
+                    rootView.setX(originX);
+                }
+                else{
+                    originY = -1 * parent.getHeight();
+                    rootView.setY(originY);
+                }
+            }
+            else if(parent instanceof GridLayout){
+                GridLayout gridLayout = (GridLayout) parent;
+                if (gridLayout.getOrientation() == gridLayout.HORIZONTAL){
                     originX = -1 * parent.getWidth();
                     rootView.setX(originX);
                 }
