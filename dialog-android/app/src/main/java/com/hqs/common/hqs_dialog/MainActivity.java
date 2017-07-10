@@ -21,18 +21,13 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private View getRootView(Activity context)
-    {
-        return ((ViewGroup)context.findViewById(android.R.id.content)).getChildAt(0);
-    }
+
+    private QDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        View rootView = getRootView(this);
-        Log.print(rootView);
 
         final ArrayList<String> titles = new ArrayList<String>();
 
@@ -100,13 +95,13 @@ public class MainActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
 
-                        QDialog dialogView = QDialog.create(MainActivity.this)
+                        dialog = QDialog.create(MainActivity.this)
                                 .setSingleButtonMode()
                                 .setSingleButtonText("OK")
                                 .setSingleButtonTextColor(Color.BLUE)
                                 .setCancelable(true);
 
-                        dialogView.show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
+                        dialog.show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
                             @Override
                             public void onClickRightButton() {
                                 makeToast("ok");
@@ -127,13 +122,13 @@ public class MainActivity extends AppCompatActivity {
 
 
                     case 1:
-                        dialogView = QDialog.create(MainActivity.this)
+                        dialog = QDialog.create(MainActivity.this)
                                 .setRightButtonTextColor(Color.BLUE)
                                 .setRightButtonText("OK")
                                 .setLeftButtonTextColor(Color.RED)
                                 .setLeftButtonText("Cancel")
                                 .setCancelable(true);
-                        dialogView.show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
+                        dialog.show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
                             @Override
                             public void onClickRightButton() {
                                 makeToast("ok");
@@ -154,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                     case 2:
-                        dialogView = QDialog.create(MainActivity.this)
+                        dialog = QDialog.create(MainActivity.this)
                                 .setRightButtonTextColor(Color.BLUE)
                                 .setRightButtonText("OK")
                                 .setLeftButtonTextColor(Color.RED)
@@ -165,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                                 .setContentBackgroundColor(getResources().getColor(R.color.colorAccent))
                                 .setCancelable(true);
 
-                        dialogView.show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
+                        dialog.show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
                             @Override
                             public void onClickRightButton() {
                                 makeToast("ok");
@@ -186,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 3:
-                        dialogView = QDialog.create(MainActivity.this)
+                        dialog = QDialog.create(MainActivity.this)
                                 .setRightButtonTextColor(Color.BLUE)
                                 .setRightButtonText("OK")
                                 .setLeftButtonTextColor(Color.RED)
@@ -196,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
                                 .setCancelable(true);
 
 
-                        dialogView.show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
+                        dialog.show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
                             @Override
                             public void onClickRightButton() {
                                 makeToast("ok");
@@ -231,5 +226,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void makeToast(String message) {
 //        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!dialog.onBackPressed()){
+            super.onBackPressed();
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.hqs.common.helper.dialog;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.CardView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +26,10 @@ import java.lang.ref.WeakReference;
 
 public class QDialog {
 
-    private static WeakReference<Activity> activityWeakReference;
+    private WeakReference<Activity> activityWeakReference;
 
-    public static DialogParam dialogParam;
-
+    private DialogParam dialogParam;
+    private QDialogViewComponent dialogViewComponent;
 
     private QDialog(Activity activity) {
         if (dialogParam == null){
@@ -61,15 +62,16 @@ public class QDialog {
 
 
         Activity activity = activityWeakReference.get();
+
         final ViewGroup parent = getRootView(activity);
-        final QDialogViewComponent dialogView = new QDialogViewComponent(parent, dialogParam, getActionBarContainer(activity));
-        dialogView.onDialogViewListener = new OnDialogViewListener() {
+        dialogViewComponent = new QDialogViewComponent(parent, dialogParam, getActionBarContainer(activity));
+        dialogViewComponent.onDialogViewListener = new OnDialogViewListener() {
             @Override
             public void onFinish() {
-                parent.removeView(dialogView.rootView);
                 dismiss();
             }
         };
+
     }
     private ViewGroup getRootView(Activity context)
     {
@@ -88,6 +90,16 @@ public class QDialog {
     }
 
 
+
+    public boolean onBackPressed() {
+            if (dialogViewComponent != null){
+                dialogViewComponent.onFinish();
+                return true;
+            }
+            return false;
+        }
+
+
     /**
      * 设置对话框的颜色
      * @param color
@@ -99,14 +111,11 @@ public class QDialog {
     }
 
     public void dismiss() {
+        dialogViewComponent = null;
         dialogParam = null;
         activityWeakReference = null;
     }
-
-    public OnDialogClickListener getOnDialogClickListener() {
-        return dialogParam.dialogClickListener;
-    }
-
+  
     /**
      * 设置分割线粗细
      * @param h
@@ -188,12 +197,12 @@ public class QDialog {
     /**
      * 释放资源
      */
-    public static void destroy() {
-        if (QDialog.activityWeakReference != null){
-            QDialog.activityWeakReference.clear();
-            QDialog.activityWeakReference = null;
+    public void destroy() {
+        if (activityWeakReference != null){
+            activityWeakReference.clear();
+            activityWeakReference = null;
         }
-        QDialog.dialogParam = null;
+        dialogParam = null;
     }
 
 
@@ -202,7 +211,7 @@ public class QDialog {
         private ViewGroup actionBarContainer;
         private Context context;
         private ViewGroup parent;
-        private RelativeLayout rootView;
+        private RootView rootView;
         private LinearLayout contentView;
         private CardView dialogView;
         private Button singleButton;
@@ -231,9 +240,16 @@ public class QDialog {
          * 设置根视图
          */
         private void setupRootView() {
-            rootView = new RelativeLayout(context);
+            rootView = new RootView(context);
             parent.addView(rootView);
-             
+
+            rootView.setOnDetachedFromWindow(new Runnable() {
+                @Override
+                public void run() {
+                    dismiss();
+                }
+            });
+
             bgView = new View(context);
             bgView.setAlpha(0);
             bgView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -520,6 +536,7 @@ public class QDialog {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
+                    parent.removeView(rootView);
                     if (actionBarContainer != null) {
                         actionBarContainer.removeView(actionBarBgView);
                     }
@@ -546,27 +563,6 @@ public class QDialog {
             }
 
         }
-//
-//        /**
-//         * 拦截返回按钮事件
-//         * @param keyCode
-//         * @param event
-//         * @return
-//         */
-//        @Override
-//        public boolean onKeyDown(int keyCode, KeyEvent event) {
-//            if (dialogParam == null) {
-//                return super.onKeyDown(keyCode, event);
-//            }
-//            if (keyCode == KeyEvent.KEYCODE_BACK && dialogParam.cancelable){
-//                if (this.rootView.isEnabled()){
-//                    this.rootView.setEnabled(false);
-//                    onFinish();
-//                }
-//            }
-//            return true;
-//        }
-
 
     }
 
