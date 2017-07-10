@@ -2,7 +2,6 @@ package com.hqs.common.helper.dialog;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,7 +89,9 @@ public class QDialog {
     // 需要在调用者的activity中调用
     public boolean onBackPressed() {
         if (dialogViewComponent != null) {
-            dialogViewComponent.onFinish();
+            if (dialogParam.cancelable){
+                dialogViewComponent.onFinish();
+            }
             return true;
         }
         return false;
