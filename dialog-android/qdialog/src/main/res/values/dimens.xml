@@ -1,9 +1,10 @@
 <resources>
 
     <!--dialog-->
-    <dimen name="q_dialogMargin">16dp</dimen>
+    <dimen name="q_dialogMargin">10dp</dimen>
     <dimen name="q_dialogHeight">120dp</dimen>
     <dimen name="q_dialogButtonHeight">42dp</dimen>
     <dimen name="q_dialogDividerHeight">1dp</dimen>
+    <dimen name="q_dialogMessageFontSize">16dp</dimen>
 
 </resources>

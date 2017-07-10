@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hqs.common.helper.dialog.QDialog;
+import com.hqs.common.utils.ActivityUtil;
 import com.hqs.common.utils.DensityUtils;
 
 import java.util.ArrayList;
@@ -20,17 +21,20 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
 
+    private QDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        ActivityUtil.setActivityFullScreen(this);
+//        ActivityUtil.hideActionBar(this);
         setContentView(R.layout.activity_main);
 
         final ArrayList<String> titles = new ArrayList<String>();
 
-        titles.add("dialog0");
+        titles.add("dialog0 single button");
         titles.add("dialog1 onclick listener");
         titles.add("dialog2 cancel ok");
-        titles.add("dialog3 auto cancel");
 
 
         ListView lv = (ListView) findViewById(R.id.lv);
@@ -91,13 +95,10 @@ public class MainActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
 
-                        QDialog dialogView = QDialog.create(MainActivity.this)
+                        dialog = QDialog.create(MainActivity.this)
                                 .setSingleButtonMode()
-                                .setSingleButtonText("OK")
-                                .setSingleButtonTextColor(Color.BLUE)
-                                .setCancelable(true);
-
-                        dialogView.show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
+                                .setSingleButtonText("我知道了")
+                                .show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
                             @Override
                             public void onClickRightButton() {
                                 makeToast("ok");
@@ -118,13 +119,15 @@ public class MainActivity extends AppCompatActivity {
 
 
                     case 1:
-                        dialogView = QDialog.create(MainActivity.this)
-                                .setRightButtonTextColor(Color.BLUE)
+                        dialog = QDialog.create(MainActivity.this)
+                                .setRightButtonTextColor(Color.GREEN)
+                                .setMessageTextColor(Color.BLACK)
                                 .setRightButtonText("OK")
                                 .setLeftButtonTextColor(Color.RED)
                                 .setLeftButtonText("Cancel")
-                                .setCancelable(true);
-                        dialogView.show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
+                                .setBackgroundColor(Color.parseColor("#AB282828"))
+                                .setCancelable(true)
+                                .show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
                             @Override
                             public void onClickRightButton() {
                                 makeToast("ok");
@@ -145,49 +148,16 @@ public class MainActivity extends AppCompatActivity {
 
 
                     case 2:
-                        dialogView = QDialog.create(MainActivity.this)
+                        dialog = QDialog.create(MainActivity.this)
                                 .setRightButtonTextColor(Color.BLUE)
                                 .setRightButtonText("OK")
                                 .setLeftButtonTextColor(Color.RED)
                                 .setLeftButtonText("Cancel")
-                                .setCancelable(true)
                                 .setDividerHeight(4)
                                 .setDividerColor(Color.YELLOW)
                                 .setContentBackgroundColor(getResources().getColor(R.color.colorAccent))
-                                .setCancelable(true);
-
-                        dialogView.show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
-                            @Override
-                            public void onClickRightButton() {
-                                makeToast("ok");
-                            }
-
-                            @Override
-                            public void onClickLeftButton() {
-                                makeToast("cancel");
-                                
-                            }
-
-                            @Override
-                            public void onCancel() {
-                                
-                            }
-                        });
-
-                        break;
-
-                    case 3:
-                        dialogView = QDialog.create(MainActivity.this)
-                                .setRightButtonTextColor(Color.BLUE)
-                                .setRightButtonText("OK")
-                                .setLeftButtonTextColor(Color.RED)
-                                .setLeftButtonText("Cancel")
                                 .setCancelable(true)
-                                .setDividerHeight(4)
-                                .setCancelable(true);
-
-
-                        dialogView.show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
+                                .show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
                             @Override
                             public void onClickRightButton() {
                                 makeToast("ok");
@@ -196,23 +166,16 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClickLeftButton() {
                                 makeToast("cancel");
+                                
                             }
 
                             @Override
                             public void onCancel() {
-
+                                
                             }
                         });
 
-//                        handler.postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                dialogView.dismiss();
-//                            }
-//                        }, 1000);
-
                         break;
-
 
                     default:
                 }
@@ -221,6 +184,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void makeToast(String message) {
-//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (dialog != null && !dialog.onBackPressed()){
+            super.onBackPressed();
+        }
     }
 }
