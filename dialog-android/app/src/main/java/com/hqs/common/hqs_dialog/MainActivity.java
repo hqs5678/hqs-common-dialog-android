@@ -14,8 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hqs.common.helper.dialog.QDialog;
+import com.hqs.common.utils.ActivityUtil;
 import com.hqs.common.utils.DensityUtils;
 import com.hqs.common.utils.Log;
+import com.hqs.common.utils.ScreenUtils;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        ActivityUtil.setActivityFullScreen(this);
+//        ActivityUtil.hideActionBar(this);
         setContentView(R.layout.activity_main);
 
         final ArrayList<String> titles = new ArrayList<String>();
