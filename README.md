@@ -1,5 +1,5 @@
 # hqs-dialog
-简单封装对话框
+简单封装对话框, 原理: 在当前activity的root view 中添加自定义view, 添加进入动画和谈出动画.
 
 #### 运行效果
 ![运行效果图](https://github.com/hqs5678/hqs-common-dialog-android/blob/master/2017-07-10%2015_10_51.gif)
