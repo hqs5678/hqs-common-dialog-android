@@ -159,6 +159,11 @@ public class QDialog {
         return this;
     }
 
+    public QDialog setMessageTextColor(int color) {
+        dialogParam.messageTextColor = color;
+        return this;
+    }
+
     /**
      * 设置背景颜色
      * @param color
@@ -411,6 +416,9 @@ public class QDialog {
             if (dialogParam.singleButtonTextColor != -1) {
                 singleButton.setTextColor(dialogParam.singleButtonTextColor);
             }
+            if (dialogParam.messageTextColor != -1) {
+                tvMessage.setTextColor(dialogParam.messageTextColor);
+            }
         }
 
         /**
@@ -581,6 +589,7 @@ public class QDialog {
         private String singleButtonText = null;
         private int leftButtonTextColor = -1;
         private int rightButtonTextColor = -1;
+        private int messageTextColor = -1;
         private int singleButtonTextColor = -1;
         private int dividerColor = -1;
         private int dividerHeight = -1;

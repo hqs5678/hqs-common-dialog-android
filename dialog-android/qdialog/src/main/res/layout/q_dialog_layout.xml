@@ -27,10 +27,10 @@
                 android:lineSpacingExtra="5dp"
                 android:minHeight="90dp"
                 android:padding="@dimen/q_dialogMargin"
-                android:text="this is message!  this is message!  this is message!  this is message!  this is message!"
+                android:text="this is message!"
                 android:textAlignment="center"
                 android:textColor="@color/q_titleColor"
-                android:textSize="17sp" />
+                android:textSize="@dimen/q_dialogMessageFontSize"/>
 
             <TextView
                 android:id="@+id/tv_divider"

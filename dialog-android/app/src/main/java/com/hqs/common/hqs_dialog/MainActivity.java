@@ -26,16 +26,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityUtil.setActivityFullScreen(this);
-        ActivityUtil.hideActionBar(this);
+//        ActivityUtil.setActivityFullScreen(this);
+//        ActivityUtil.hideActionBar(this);
         setContentView(R.layout.activity_main);
 
         final ArrayList<String> titles = new ArrayList<String>();
 
-        titles.add("dialog0");
+        titles.add("dialog0 single button");
         titles.add("dialog1 onclick listener");
         titles.add("dialog2 cancel ok");
-        titles.add("dialog3 auto cancel");
 
 
         ListView lv = (ListView) findViewById(R.id.lv);
@@ -121,11 +120,12 @@ public class MainActivity extends AppCompatActivity {
 
                     case 1:
                         dialog = QDialog.create(MainActivity.this)
-                                .setRightButtonTextColor(Color.BLUE)
+                                .setRightButtonTextColor(Color.GREEN)
+                                .setMessageTextColor(Color.BLACK)
                                 .setRightButtonText("OK")
                                 .setLeftButtonTextColor(Color.RED)
                                 .setLeftButtonText("Cancel")
-                                .setBackgroundColor(Color.argb(100, 244, 233, 111))
+                                .setBackgroundColor(Color.parseColor("#AB282828"))
                                 .setCancelable(true)
                                 .show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
                             @Override
@@ -176,34 +176,6 @@ public class MainActivity extends AppCompatActivity {
                         });
 
                         break;
-
-                    case 3:
-                        dialog = QDialog.create(MainActivity.this)
-                                .setRightButtonTextColor(Color.BLUE)
-                                .setRightButtonText("OK")
-                                .setLeftButtonTextColor(Color.RED)
-                                .setLeftButtonText("Cancel")
-                                .setDividerHeight(4)
-                                .show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
-                            @Override
-                            public void onClickRightButton() {
-                                makeToast("ok");
-                            }
-
-                            @Override
-                            public void onClickLeftButton() {
-                                makeToast("cancel");
-                            }
-
-                            @Override
-                            public void onCancel() {
-
-                            }
-                        });
-
-
-                        break;
-
 
                     default:
                 }
