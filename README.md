@@ -59,6 +59,22 @@ public void onBackPressed() {
 ```
 
 
+##### 自定义对话框样式
+
+1. setContentBackgroundColor  设置对话框颜色
+1. setBackgroundColor 设置对话框背景颜色
+1. setDividerHeight  设置分割线高度
+1. setDividerColor 设置分割线颜色
+1. setButtonRippleColor  设置按钮波纹颜色
+1. setLeftButtonText  设置左边按钮的标题
+1. setLeftButtonTextColor  设置左边按钮的字体颜色
+1. setRightButtonText 设置右边按钮的标题
+1. setRightButtonTextColor 设置右边按钮的字体颜色
+1. setSingleButtonMode 设置一个按钮的模式
+1. setSingleButtonText 设置一个按钮时按钮的标题
+1. setSingleButtonTextColor 设置一个按钮时按钮的颜色
+
+
 
 
 
