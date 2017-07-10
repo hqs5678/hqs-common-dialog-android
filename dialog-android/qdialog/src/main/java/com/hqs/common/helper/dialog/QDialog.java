@@ -2,14 +2,18 @@ package com.hqs.common.helper.dialog;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -219,6 +223,8 @@ public class QDialog {
         private View.OnClickListener onDismissClickListener;
         private float n = 8;
         private float originS = 0;
+        private float originX = 0;
+        private float originY = 0;
 
         public QDialogViewComponent(ViewGroup parent, ViewGroup actionBarContainer) {
             this.parent = parent;
@@ -235,6 +241,35 @@ public class QDialog {
         private void setupRootView() {
             rootView = new RootView(context);
             parent.addView(rootView);
+
+            ViewGroup.LayoutParams layoutParams = rootView.getLayoutParams();
+            layoutParams.width = parent.getWidth();
+            layoutParams.height = parent.getHeight();
+            rootView.setLayoutParams(layoutParams);
+
+            if (parent instanceof LinearLayout){
+                LinearLayout linearLayout = (LinearLayout) parent;
+                if (linearLayout.getOrientation() == LinearLayout.HORIZONTAL){
+                    originX = -1 * parent.getWidth();
+                    rootView.setX(originX);
+                }
+                else{
+                    originY = -1 * parent.getHeight();
+                    rootView.setY(originY);
+                }
+            }
+            else if(parent instanceof GridLayout){
+                GridLayout gridLayout = (GridLayout) parent;
+                if (gridLayout.getOrientation() == gridLayout.HORIZONTAL){
+                    originX = -1 * parent.getWidth();
+                    rootView.setX(originX);
+                }
+                else{
+                    originY = -1 * parent.getHeight();
+                    rootView.setY(originY);
+                }
+            }
+
 
             rootView.setOnDetachedFromWindow(new Runnable() {
                 @Override
@@ -539,7 +574,7 @@ public class QDialog {
 
             rootView.clearAnimation();
 
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.dialog_out_qs);
+            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_out);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -560,15 +595,32 @@ public class QDialog {
 
                 }
             });
+            float x = originX * 0.5f;
+            float y = originY * 0.5f;
+            if (x == 0){
+                x = rootView.getWidth() * 0.5f;
+            }
+            if (y == 0){
+                 y = rootView.getHeight() * 0.5f;
+            }
 
-            rootView.setAnimation(animation);
+            Animation scaleAnim = new ScaleAnimation(1, originS, 1, originS, x, y);
+
+            AnimationSet animationSet = new AnimationSet(true);
+            animationSet.addAnimation(animation);
+            animationSet.addAnimation(scaleAnim);
+            animationSet.setFillAfter(true);
+            animationSet.setDuration(230);
+
+
+            animationSet.setInterpolator(context, R.anim.decelerate_factor_interpolator_qs);
+
+            rootView.setAnimation(animationSet);
             animation.start();
 
 
 
             if (actionBarBgView != null){
-
-                animation = AnimationUtils.loadAnimation(context, R.anim.fade_out_qs);
                 animation.setFillAfter(true);
                 actionBarBgView.clearAnimation();
                 actionBarBgView.setAnimation(animation);

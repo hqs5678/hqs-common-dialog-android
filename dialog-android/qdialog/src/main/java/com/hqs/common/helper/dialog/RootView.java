@@ -4,8 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.hqs.common.utils.Log;
-
 /**
  * Created by super on 2017/7/10.
  */
