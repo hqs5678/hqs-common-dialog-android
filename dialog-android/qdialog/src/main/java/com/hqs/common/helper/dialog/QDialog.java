@@ -50,9 +50,9 @@ public class QDialog {
         return this;
     }
 
-    public void show(String message, OnDialogClickListener onDialogClickListener) {
+    public QDialog show(String message, OnDialogClickListener onDialogClickListener) {
         if (dialogParam.onShowing){
-            return;
+            return this;
         }
         dialogParam.message = message;
         dialogParam.dialogClickListener = onDialogClickListener;
@@ -68,7 +68,7 @@ public class QDialog {
                 dismiss();
             }
         };
-
+        return this;
     }
 
     // 获取activity的root view
