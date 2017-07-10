@@ -74,6 +74,9 @@ public void onBackPressed() {
 1. setSingleButtonText 设置一个按钮时按钮的标题
 1. setSingleButtonTextColor 设置一个按钮时按钮的颜色
 
+###### 详情请查看Demo
+
+
 
 
 
