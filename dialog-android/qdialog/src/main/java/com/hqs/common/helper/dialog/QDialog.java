@@ -61,7 +61,7 @@ public class QDialog {
 
 
         Activity activity = activityWeakReference.get();
-        dialogViewComponent = new QDialogViewComponent(getRootView(activity), dialogParam, getActionBarContainer(activity));
+        dialogViewComponent = new QDialogViewComponent(getRootView(activity), getActionBarContainer(activity));
         dialogViewComponent.onDialogViewListener = new OnDialogViewListener() {
             @Override
             public void onFinish() {
@@ -85,12 +85,12 @@ public class QDialog {
     // 添加返回按钮点击事件
     // 需要在调用者的activity中调用
     public boolean onBackPressed() {
-            if (dialogViewComponent != null){
-                dialogViewComponent.onFinish();
-                return true;
-            }
-            return false;
+        if (dialogViewComponent != null) {
+            dialogViewComponent.onFinish();
+            return true;
         }
+        return false;
+    }
 
 
     /**
@@ -164,6 +164,12 @@ public class QDialog {
      * @param color
      * @return
      */
+
+    public QDialog setBackgroundColor(int color) {
+        dialogParam.backgroundColor = color;
+        return this;
+    }
+
     public QDialog setDividerColor(int color) {
         dialogParam.rightButtonTextColor = color;
         return this;
@@ -204,12 +210,12 @@ public class QDialog {
         private TextView tvDivider1;
         private View bgView;
         private View actionBarBgView;
-        private DialogParam dialogParam;
         private OnDialogViewListener onDialogViewListener;
         private View.OnClickListener onDismissClickListener;
+        private float n = 8;
+        private float originS = 0;
 
-        public QDialogViewComponent(ViewGroup parent, DialogParam dialogParam, ViewGroup actionBarContainer) {
-            this.dialogParam = dialogParam;
+        public QDialogViewComponent(ViewGroup parent, ViewGroup actionBarContainer) {
             this.parent = parent;
             this.context = parent.getContext();
             this.actionBarContainer = actionBarContainer;
@@ -237,7 +243,12 @@ public class QDialog {
             bgView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             rootView.addView(bgView);
 
-            bgView.setBackgroundResource(R.color.q_dialogBackgroundColor);
+            if (dialogParam.backgroundColor == -1){
+                bgView.setBackgroundResource(R.color.q_dialogBackgroundColor);
+            }
+            else{
+                bgView.setBackgroundColor(dialogParam.backgroundColor);
+            }
 
             onDismissClickListener = new View.OnClickListener() {
                 @Override
@@ -256,7 +267,12 @@ public class QDialog {
             if (actionBarContainer != null){
                 actionBarBgView = new View(context);
                 actionBarBgView.setAlpha(0);
-                actionBarBgView.setBackgroundResource(R.color.q_dialogBackgroundColor);
+                if (dialogParam.backgroundColor == -1){
+                    actionBarBgView.setBackgroundResource(R.color.q_dialogBackgroundColor);
+                }
+                else{
+                    actionBarBgView.setBackgroundColor(dialogParam.backgroundColor);
+                }
                 int h = actionBarContainer.getChildAt(0).getHeight();
                 actionBarBgView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h));
                 actionBarContainer.addView(actionBarBgView);
@@ -453,8 +469,6 @@ public class QDialog {
             });
         }
 
-        private float n = 8;
-        private float originS = 0;
         private class AnimRunnable implements Runnable{
 
             float minS = 0.001f;
@@ -497,6 +511,12 @@ public class QDialog {
                 tvDivider1.setVisibility(View.INVISIBLE);
                 rightButton.setVisibility(View.INVISIBLE);
                 singleButton.setVisibility(View.VISIBLE);
+            }
+            else{
+                leftButton.setVisibility(View.VISIBLE);
+                tvDivider1.setVisibility(View.VISIBLE);
+                rightButton.setVisibility(View.VISIBLE);
+                singleButton.setVisibility(View.INVISIBLE);
             }
         }
 
@@ -567,6 +587,7 @@ public class QDialog {
         private boolean cancelable = false;
         private boolean isSingleButtonMode = false;
         private int contentBackgroundColor = -1;
+        private int backgroundColor = -1;
         private int buttonRippleColor = -1;
         private OnDialogClickListener dialogClickListener = null;
         private boolean onShowing = false;

@@ -101,9 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
                         dialog = QDialog.create(MainActivity.this)
                                 .setSingleButtonMode()
-                                .setSingleButtonText("OK")
-                                .setSingleButtonTextColor(Color.BLUE)
-                                .setCancelable(false);
+                                .setSingleButtonText("我知道了");
 
                         dialog.show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
                             @Override
@@ -131,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                                 .setRightButtonText("OK")
                                 .setLeftButtonTextColor(Color.RED)
                                 .setLeftButtonText("Cancel")
+                                .setBackgroundColor(Color.argb(100, 244, 233, 111))
                                 .setCancelable(true);
                         dialog.show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
                             @Override
@@ -158,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
                                 .setRightButtonText("OK")
                                 .setLeftButtonTextColor(Color.RED)
                                 .setLeftButtonText("Cancel")
-                                .setCancelable(true)
                                 .setDividerHeight(4)
                                 .setDividerColor(Color.YELLOW)
                                 .setContentBackgroundColor(getResources().getColor(R.color.colorAccent))
@@ -190,9 +188,7 @@ public class MainActivity extends AppCompatActivity {
                                 .setRightButtonText("OK")
                                 .setLeftButtonTextColor(Color.RED)
                                 .setLeftButtonText("Cancel")
-                                .setCancelable(true)
-                                .setDividerHeight(4)
-                                .setCancelable(true);
+                                .setDividerHeight(4);
 
 
                         dialog.show("我是来打酱油打酱油的是来打酱油的是来打酱油的我是来打酱的是来打酱油的是来打酱油的我是来打酱油的!!!", new QDialog.OnDialogClickListener() {
