@@ -5,7 +5,7 @@
 ![运行效果图](https://github.com/hqs5678/hqs-common-dialog-android/blob/master/2017-07-10%2015_10_51.gif)
 
 
- 
+
 ### 添加到项目
 
 #### gradle
@@ -13,7 +13,7 @@
 ```
 
 dependencies {
-    compile 'com.hqs.common.view.dialog:qdialog:1.0.15'
+    compile 'com.hqs.common.view.dialog:qdialog:1.0.16'
 }
 
 ```
@@ -30,12 +30,12 @@ dialog = QDialog.create(MainActivity.this)
         public void onClickRightButton() {
             makeToast("ok");
         }
-    
+
         @Override
         public void onClickLeftButton() {
             makeToast("cancel");
         }
-    
+
         @Override
         public void onCancel() {
             // 只一个按钮时也会触发onCancel()
@@ -75,9 +75,3 @@ public void onBackPressed() {
 1. setSingleButtonTextColor 设置一个按钮时按钮的颜色
 
 ###### 详情请查看Demo
-
-
-
-
-
-

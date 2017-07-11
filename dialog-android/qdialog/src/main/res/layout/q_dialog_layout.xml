@@ -24,13 +24,14 @@
                 android:id="@+id/tv_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:lineSpacingExtra="5dp"
                 android:minHeight="90dp"
                 android:padding="@dimen/q_dialogMargin"
                 android:text="this is message!"
                 android:textAlignment="center"
                 android:textColor="@color/q_titleColor"
-                android:textSize="@dimen/q_dialogMessageFontSize"/>
+                android:textSize="@dimen/q_dialogMessageFontSize" />
 
             <TextView
                 android:id="@+id/tv_divider"
