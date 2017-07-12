@@ -66,7 +66,7 @@ public class QDialog {
         dialogViewComponent = new QDialogViewComponent(getRootView(activity));
         dialogViewComponent.onDialogViewListener = new OnDialogViewListener() {
             @Override
-            public void onFinish() {
+            public void onDismiss() {
                 dismiss();
             }
         };
@@ -91,7 +91,7 @@ public class QDialog {
     public boolean onBackPressed() {
         if (dialogViewComponent != null) {
             if (dialogParam.cancelable){
-                dialogViewComponent.onFinish();
+                dialogViewComponent.onDismiss();
             }
             return true;
         }
@@ -287,7 +287,7 @@ public class QDialog {
                         if (dialogParam.dialogClickListener != null) {
                             dialogParam.dialogClickListener.onCancel();
                         }
-                        onFinish();
+                        onDismiss();
                     }
                 }
             };
@@ -337,7 +337,7 @@ public class QDialog {
                         if (dialogParam != null && dialogParam.dialogClickListener != null) {
                             dialogParam.dialogClickListener.onClickLeftButton();
                         }
-                        onFinish();
+                        onDismiss();
                     }
 
                 }
@@ -350,7 +350,7 @@ public class QDialog {
                         if (dialogParam != null && dialogParam.dialogClickListener != null) {
                             dialogParam.dialogClickListener.onClickRightButton();
                         }
-                        onFinish();
+                        onDismiss();
                     }
 
                 }
@@ -363,7 +363,7 @@ public class QDialog {
                         if (dialogParam != null && dialogParam.dialogClickListener != null) {
                             dialogParam.dialogClickListener.onCancel();
                         }
-                        onFinish();
+                        onDismiss();
                     }
                 }
             });
@@ -534,7 +534,7 @@ public class QDialog {
          * 在finish时调用的方法
          * 设置退出的动画
          */
-        private void onFinish() {
+        private void onDismiss() {
             if (dialogParam == null || !rootView.isEnabled()){
                 return;
             }
@@ -551,7 +551,7 @@ public class QDialog {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     parent.removeView(rootView);
-                    onDialogViewListener.onFinish();
+                    onDialogViewListener.onDismiss();
                 }
 
                 @Override
@@ -610,7 +610,7 @@ public class QDialog {
     }
 
     private interface OnDialogViewListener {
-        void onFinish();
+        void onDismiss();
     }
 }
 
