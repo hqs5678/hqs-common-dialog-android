@@ -12,7 +12,6 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -76,7 +75,7 @@ public class QDialog {
 
     // 获取activity的root view
     private ViewGroup getRootView(Activity context) {
-        return (ViewGroup) ((ViewGroup)context.findViewById(android.R.id.content)).getChildAt(0);
+        return (ViewGroup) context.findViewById(android.R.id.content).getParent().getParent().getParent();
     }
 
     // 获取actionBar的Container View
@@ -210,7 +209,7 @@ public class QDialog {
         private Context context;
         private ViewGroup parent;
         private RootView rootView;
-        private LinearLayout contentView;
+        private ViewGroup contentView;
         private CardView dialogView;
         private Button singleButton;
         private Button leftButton;
@@ -259,17 +258,6 @@ public class QDialog {
                     rootView.setY(originY);
                 }
             }
-            else if(parent instanceof GridLayout){
-                GridLayout gridLayout = (GridLayout) parent;
-                if (gridLayout.getOrientation() == gridLayout.HORIZONTAL){
-                    originX = -1 * parent.getWidth();
-                    rootView.setX(originX);
-                }
-                else{
-                    originY = -1 * parent.getHeight();
-                    rootView.setY(originY);
-                }
-            }
 
 
             rootView.setOnDetachedFromWindow(new Runnable() {
@@ -305,19 +293,19 @@ public class QDialog {
             };
             bgView.setOnClickListener(onDismissClickListener);
 
-            if (actionBarContainer != null){
-                actionBarBgView = new View(context);
-                actionBarBgView.setAlpha(0);
-                if (dialogParam.backgroundColor == -1){
-                    actionBarBgView.setBackgroundResource(R.color.q_dialogBackgroundColor);
-                }
-                else{
-                    actionBarBgView.setBackgroundColor(dialogParam.backgroundColor);
-                }
-                int h = actionBarContainer.getChildAt(0).getHeight();
-                actionBarBgView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h));
-                actionBarContainer.addView(actionBarBgView);
-            }
+//            if (actionBarContainer != null){
+//                actionBarBgView = new View(context);
+//                actionBarBgView.setAlpha(0);
+//                if (dialogParam.backgroundColor == -1){
+//                    actionBarBgView.setBackgroundResource(R.color.q_dialogBackgroundColor);
+//                }
+//                else{
+//                    actionBarBgView.setBackgroundColor(dialogParam.backgroundColor);
+//                }
+//                int h = actionBarContainer.getChildAt(0).getHeight();
+//                actionBarBgView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h));
+//                actionBarContainer.addView(actionBarBgView);
+//            }
         }
 
         /**
@@ -330,18 +318,9 @@ public class QDialog {
             }
 
             LayoutInflater inflater = LayoutInflater.from(context);
-            contentView = (LinearLayout) inflater.inflate(R.layout.q_dialog_layout, null);
+            contentView = (ViewGroup) inflater.inflate(R.layout.q_dialog_layout, null);
             contentView.setAlpha(0);
             rootView.addView(contentView);
-
-            TextView tvBottom = (TextView) contentView.findViewById(R.id.tv_bottom);
-            if (actionBarContainer != null){
-                int h = actionBarContainer.getChildAt(0).getHeight();
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        (int) (h + 20 * ScreenUtils.density(context)));
-                tvBottom.setLayoutParams(params);
-            }
-            tvBottom.setOnClickListener(onDismissClickListener);
 
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -504,6 +483,7 @@ public class QDialog {
             originS = ScreenUtils.screenW(context) / (ScreenUtils.screenW(context) - dialogParam.margin * 2) + 0.1f;
             contentView.setScaleX(originS);
             contentView.setScaleY(originS);
+            rootView.setEnabled(false);
 
             rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
@@ -542,6 +522,9 @@ public class QDialog {
                 if (s > 1){
                     contentView.postOnAnimationDelayed(new AnimRunnable(), 10);
                 }
+                else{
+                    rootView.setEnabled(true);
+                }
             }
         }
 
@@ -569,10 +552,10 @@ public class QDialog {
          * 设置退出的动画
          */
         private void onFinish() {
-            if (dialogParam == null){
+            if (dialogParam == null || !rootView.isEnabled()){
                 return;
             }
-
+            rootView.setEnabled(false);
             rootView.clearAnimation();
 
             Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_out);
