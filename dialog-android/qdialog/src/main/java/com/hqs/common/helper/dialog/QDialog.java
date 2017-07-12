@@ -63,7 +63,7 @@ public class QDialog {
 
 
         Activity activity = activityWeakReference.get();
-        dialogViewComponent = new QDialogViewComponent(getRootView(activity), getActionBarContainer(activity));
+        dialogViewComponent = new QDialogViewComponent(getRootView(activity));
         dialogViewComponent.onDialogViewListener = new OnDialogViewListener() {
             @Override
             public void onFinish() {
@@ -77,12 +77,6 @@ public class QDialog {
     private ViewGroup getRootView(Activity context) {
         return (ViewGroup) context.findViewById(android.R.id.content).getParent().getParent().getParent();
     }
-
-    // 获取actionBar的Container View
-    private ViewGroup getActionBarContainer(Activity context) {
-        return (ViewGroup) context.findViewById(R.id.action_bar_container);
-    }
-
 
     // 添加返回按钮点击事件
     // 需要在调用者的activity中调用
@@ -218,7 +212,6 @@ public class QDialog {
         private TextView tvDivider0;
         private TextView tvDivider1;
         private View bgView;
-        private View actionBarBgView;
         private OnDialogViewListener onDialogViewListener;
         private View.OnClickListener onDismissClickListener;
         private float n = 8;
@@ -226,10 +219,9 @@ public class QDialog {
         private float originX = 0;
         private float originY = 0;
 
-        public QDialogViewComponent(ViewGroup parent, ViewGroup actionBarContainer) {
+        public QDialogViewComponent(ViewGroup parent) {
             this.parent = parent;
             this.context = parent.getContext();
-            this.actionBarContainer = actionBarContainer;
             setupRootView();
             setupContentView();
             enter();
@@ -510,9 +502,6 @@ public class QDialog {
                 }
                 float alpha = 1 - (s - 1) / (originS - 1);
                 bgView.setAlpha(alpha);
-                if (actionBarBgView != null){
-                    actionBarBgView.setAlpha(alpha);
-                }
                 contentView.setAlpha(alpha);
 
                 s = s - step;
@@ -568,9 +557,6 @@ public class QDialog {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     parent.removeView(rootView);
-                    if (actionBarContainer != null) {
-                        actionBarContainer.removeView(actionBarBgView);
-                    }
                     onDialogViewListener.onFinish();
                 }
 
@@ -601,15 +587,6 @@ public class QDialog {
 
             rootView.setAnimation(animationSet);
             animation.start();
-
-
-
-            if (actionBarBgView != null){
-                animation.setFillAfter(true);
-                actionBarBgView.clearAnimation();
-                actionBarBgView.setAnimation(animation);
-            }
-
         }
 
     }
