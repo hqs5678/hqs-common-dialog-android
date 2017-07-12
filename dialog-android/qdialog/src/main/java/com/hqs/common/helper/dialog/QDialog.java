@@ -207,7 +207,6 @@ public class QDialog {
 
     public class QDialogViewComponent {
 
-        private ViewGroup actionBarContainer;
         private Context context;
         private ViewGroup parent;
         private RootView rootView;
