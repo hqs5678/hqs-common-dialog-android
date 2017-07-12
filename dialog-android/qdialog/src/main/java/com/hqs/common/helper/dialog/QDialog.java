@@ -284,20 +284,6 @@ public class QDialog {
                 }
             };
             bgView.setOnClickListener(onDismissClickListener);
-
-//            if (actionBarContainer != null){
-//                actionBarBgView = new View(context);
-//                actionBarBgView.setAlpha(0);
-//                if (dialogParam.backgroundColor == -1){
-//                    actionBarBgView.setBackgroundResource(R.color.q_dialogBackgroundColor);
-//                }
-//                else{
-//                    actionBarBgView.setBackgroundColor(dialogParam.backgroundColor);
-//                }
-//                int h = actionBarContainer.getChildAt(0).getHeight();
-//                actionBarBgView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h));
-//                actionBarContainer.addView(actionBarBgView);
-//            }
         }
 
         /**
