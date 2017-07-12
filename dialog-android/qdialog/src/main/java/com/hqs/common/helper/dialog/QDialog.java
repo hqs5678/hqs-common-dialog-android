@@ -63,7 +63,7 @@ public class QDialog {
 
 
         Activity activity = activityWeakReference.get();
-        dialogViewComponent = new QDialogViewComponent(getRootView(activity));
+        dialogViewComponent = new QDialogViewComponent(ViewUtil.getRootView(activity));
         dialogViewComponent.onDialogViewListener = new OnDialogViewListener() {
             @Override
             public void onDismiss() {
@@ -71,19 +71,6 @@ public class QDialog {
             }
         };
         return this;
-    }
-
-    // 获取activity的root view
-    private ViewGroup getRootView(Activity context) {
-        ViewGroup viewGroup = (ViewGroup) context.findViewById(android.R.id.content);
-        while (true){
-            viewGroup = (ViewGroup) viewGroup.getParent();
-            if ((viewGroup.getWidth() == ScreenUtils.screenW(context) && viewGroup.getHeight() == ScreenUtils.screenH(context))
-                    || (viewGroup.getWidth() == ScreenUtils.screenH(context) && viewGroup.getHeight() == ScreenUtils.screenW(context))){
-                break;
-            }
-        }
-        return viewGroup;
     }
 
     // 添加返回按钮点击事件
