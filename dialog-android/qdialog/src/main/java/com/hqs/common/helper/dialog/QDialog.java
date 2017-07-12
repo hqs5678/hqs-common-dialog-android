@@ -63,27 +63,14 @@ public class QDialog {
 
 
         Activity activity = activityWeakReference.get();
-        dialogViewComponent = new QDialogViewComponent(getRootView(activity));
+        dialogViewComponent = new QDialogViewComponent(ViewUtil.getRootView(activity));
         dialogViewComponent.onDialogViewListener = new OnDialogViewListener() {
             @Override
-            public void onFinish() {
+            public void onDismiss() {
                 dismiss();
             }
         };
         return this;
-    }
-
-    // 获取activity的root view
-    private ViewGroup getRootView(Activity context) {
-        ViewGroup viewGroup = (ViewGroup) context.findViewById(android.R.id.content);
-        while (true){
-            viewGroup = (ViewGroup) viewGroup.getParent();
-            if ((viewGroup.getWidth() == ScreenUtils.screenW(context) && viewGroup.getHeight() == ScreenUtils.screenH(context))
-                    || (viewGroup.getWidth() == ScreenUtils.screenH(context) && viewGroup.getHeight() == ScreenUtils.screenW(context))){
-                break;
-            }
-        }
-        return viewGroup;
     }
 
     // 添加返回按钮点击事件
@@ -91,7 +78,7 @@ public class QDialog {
     public boolean onBackPressed() {
         if (dialogViewComponent != null) {
             if (dialogParam.cancelable){
-                dialogViewComponent.onFinish();
+                dialogViewComponent.onDismiss();
             }
             return true;
         }
@@ -207,7 +194,6 @@ public class QDialog {
 
     public class QDialogViewComponent {
 
-        private ViewGroup actionBarContainer;
         private Context context;
         private ViewGroup parent;
         private RootView rootView;
@@ -287,7 +273,7 @@ public class QDialog {
                         if (dialogParam.dialogClickListener != null) {
                             dialogParam.dialogClickListener.onCancel();
                         }
-                        onFinish();
+                        onDismiss();
                     }
                 }
             };
@@ -337,7 +323,7 @@ public class QDialog {
                         if (dialogParam != null && dialogParam.dialogClickListener != null) {
                             dialogParam.dialogClickListener.onClickLeftButton();
                         }
-                        onFinish();
+                        onDismiss();
                     }
 
                 }
@@ -350,7 +336,7 @@ public class QDialog {
                         if (dialogParam != null && dialogParam.dialogClickListener != null) {
                             dialogParam.dialogClickListener.onClickRightButton();
                         }
-                        onFinish();
+                        onDismiss();
                     }
 
                 }
@@ -363,7 +349,7 @@ public class QDialog {
                         if (dialogParam != null && dialogParam.dialogClickListener != null) {
                             dialogParam.dialogClickListener.onCancel();
                         }
-                        onFinish();
+                        onDismiss();
                     }
                 }
             });
@@ -534,7 +520,7 @@ public class QDialog {
          * 在finish时调用的方法
          * 设置退出的动画
          */
-        private void onFinish() {
+        private void onDismiss() {
             if (dialogParam == null || !rootView.isEnabled()){
                 return;
             }
@@ -551,7 +537,7 @@ public class QDialog {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     parent.removeView(rootView);
-                    onDialogViewListener.onFinish();
+                    onDialogViewListener.onDismiss();
                 }
 
                 @Override
@@ -610,7 +596,7 @@ public class QDialog {
     }
 
     private interface OnDialogViewListener {
-        void onFinish();
+        void onDismiss();
     }
 }
 
