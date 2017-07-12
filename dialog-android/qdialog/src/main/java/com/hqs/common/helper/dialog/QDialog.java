@@ -6,6 +6,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -75,7 +76,15 @@ public class QDialog {
 
     // 获取activity的root view
     private ViewGroup getRootView(Activity context) {
-        return (ViewGroup) context.findViewById(android.R.id.content).getParent().getParent().getParent();
+        ViewGroup viewGroup = (ViewGroup) context.findViewById(android.R.id.content);
+        while (true){
+            viewGroup = (ViewGroup) viewGroup.getParent();
+            if ((viewGroup.getWidth() == ScreenUtils.screenW(context) && viewGroup.getHeight() == ScreenUtils.screenH(context))
+                    || (viewGroup.getWidth() == ScreenUtils.screenH(context) && viewGroup.getHeight() == ScreenUtils.screenW(context))){
+                break;
+            }
+        }
+        return viewGroup;
     }
 
     // 添加返回按钮点击事件
