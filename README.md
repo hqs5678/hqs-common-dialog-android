@@ -13,7 +13,7 @@
 ```
 
 dependencies {
-    compile 'com.hqs.common.view.dialog:qdialog:1.0.19'
+    compile 'com.hqs.common.view.dialog:qdialog:1.0.20'
 }
 
 ```
