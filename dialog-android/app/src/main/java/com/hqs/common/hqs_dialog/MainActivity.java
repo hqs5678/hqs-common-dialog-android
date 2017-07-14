@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.hqs.common.helper.dialog.QDialog;
 import com.hqs.common.utils.ActivityUtil;
 import com.hqs.common.utils.DensityUtils;
+import com.hqs.common.utils.StatusBarUtil;
 
 import java.util.ArrayList;
 
@@ -27,8 +28,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        ActivityUtil.setActivityFullScreen(this);
-//        ActivityUtil.hideActionBar(this);
+        ActivityUtil.hideActionBar(this);
         setContentView(R.layout.activity_main);
+        StatusBarUtil.transparencyBar(this);
 
         final ArrayList<String> titles = new ArrayList<String>();
 
