@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         app:cardBackgroundColor="#dfdddd"
-        app:cardCornerRadius="3dp"
+        app:cardCornerRadius="@dimen/q_dialogCardCornerRadius"
         app:cardElevation="1dp">
 
         <RelativeLayout
